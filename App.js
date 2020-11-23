@@ -1,25 +1,70 @@
 import React, { useState } from 'react'
-import { Button, Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ListOfTaskLists from './components/ListOfTaskLists'
 import TaskList from './components/TaskList'
+import SignUpPage from './components/SignUpPage';
+import SignInPage from './components/SignInPage';
 
-const Root = createStackNavigator()
+const HomeStack = createStackNavigator()
+const Tab = createBottomTabNavigator();
 
-const App = (props) => {
+const HomeStackScreen = (props) => {
   return (
-    <NavigationContainer>
-      <Root.Navigator>
-        <Root.Screen name="Home" component={ListOfTaskLists} />
-        <Root.Screen name="Details" component={TaskList} />
-      </Root.Navigator>
-    </NavigationContainer>
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="Home" component={ListOfTaskLists} />
+      <HomeStack.Screen name="Details" component={TaskList} />
+    </HomeStack.Navigator>
   )
 }
 
+const USERSCREEN = {
+  'guest': [{
+    name: 'Sign Up',
+    component: SignUpPage
+  }
+    , {
+    name: 'Sign In',
+    component: SignInPage
+  }],
+  'user': [{
+    name: 'Home',
+    component: HomeStackScreen
+  }, {
+    name: 'Settings',
+    component: Settings
+  }]
+}
 
-export default App
+function Settings({ navigation }) {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Settings screen</Text>
+    </View>
+  );
+}
+
+export default function App() {
+  const [isLoggedIn, setLogin] = useState(true)
+  const screensLoaded = isLoggedIn ? USERSCREEN['user'] : USERSCREEN['guest']
+  const guestProps = !isLoggedIn && {
+    setLogin
+  }
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        tabBarOptions={{
+          activeTintColor: 'tomato',
+          inactiveTintColor: 'gray',
+        }}>
+        {screensLoaded.map(({ name, component }) => <Tab.Screen name={name} component={component} key={name} guestProps={guestProps} />)}
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
+
 
 const styles = StyleSheet.create({
   screen: {

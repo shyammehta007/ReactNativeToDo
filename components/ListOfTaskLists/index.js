@@ -1,8 +1,21 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Text, View, StyleSheet, TextInput, TouchableWithoutFeedback, TouchableOpacity, Button, FlatList } from 'react-native'
+import { Text, View, StyleSheet, TextInput, TouchableWithoutFeedback, Button, FlatList } from 'react-native'
 import { createTasklist, updateTasklist, deleteTasklist } from '../../actions/TaskListOps'
-import { ScrollView } from 'react-native-gesture-handler'
+import { Swipeable } from 'react-native-gesture-handler'
+
+const rightAction = ({ dispatchDeleteTasklist, tasklistId }) => {
+    return (
+        <View style={styles.deletedStyle}>
+            <Button
+                color='white'
+                title='DELETE'
+                onPress={() => { dispatchDeleteTasklist({ tasklistId }) }}
+                style={styles.deletedStyle}>Deleted</Button>
+        </View>
+    )
+}
+
 
 const ListOfTaskLists = (props) => {
     const { navigation, route, dispatchCreateTasklist, listOfTasklistArray, dispatchUpdateTasklist, dispatchDeleteTasklist } = props
@@ -13,30 +26,29 @@ const ListOfTaskLists = (props) => {
             title
         } = data
         return (
-            <View style={styles.listElementContainer}>
-                <TextInput
-                    style={styles.listElementTitle}
-                    onChangeText={(e) => {
-                        dispatchUpdateTasklist({ tasklistId, title: e })
-                    }} autoFocus>
-                    {title}
-                </TextInput>
-                <Button
-                    color={'darkred'}
-                    title={'Delete'}
-                    onPress={() => { dispatchDeleteTasklist({ tasklistId }) }}
-                />
-                <TouchableWithoutFeedback
-                    onPress={() => {
-                        navigation.navigate('Details', { id: tasklistId })
-                    }}>
-                    <Text style={styles.detailsViewRedirection}>{'->'}</Text>
-                </TouchableWithoutFeedback>
-            </View>
+            <Swipeable
+                renderRightActions={() => rightAction({ dispatchDeleteTasklist, tasklistId })}
+            >
+                <View style={styles.listElementContainer}>
+                    <TextInput
+                        style={styles.listElementTitle}
+                        onChangeText={(e) => {
+                            dispatchUpdateTasklist({ tasklistId, title: e })
+                        }} autoFocus>
+                        {title}
+                    </TextInput>
+                    <TouchableWithoutFeedback
+                        onPress={() => {
+                            navigation.navigate('Details', { id: tasklistId })
+                        }}>
+                        <Text style={styles.detailsViewRedirection}>{'->'}</Text>
+                    </TouchableWithoutFeedback>
+                </View>
+            </Swipeable>
         )
     }
     return (
-        <ScrollView>
+        <View>
             <View style={styles.homeHeader}>
                 <Text style={styles.headerText}> List of Tasklist  </Text>
                 <Button
@@ -48,7 +60,7 @@ const ListOfTaskLists = (props) => {
                 data={listOfTasklistArray}
                 renderItem={({ item }) => renderListElement(item)}
             />
-        </ScrollView>)
+        </View>)
 }
 
 const mapStateToProps = state => {
@@ -86,7 +98,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         height: 60,
         backgroundColor: 'darkgrey',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
     },
     listElementTitle: {
@@ -99,6 +111,11 @@ const styles = StyleSheet.create({
     detailsViewRedirection: {
         color: 'white',
         fontSize: 25
+    },
+    deletedStyle: {
+        backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
 

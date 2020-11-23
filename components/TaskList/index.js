@@ -2,8 +2,21 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Button, Text, View, StyleSheet, ScrollView, TextInput } from 'react-native'
 import { createTask, updateTask, deleteTask } from '../../actions/TaskOps'
-import { FlatList } from 'react-native-gesture-handler'
+import { FlatList, Swipeable } from 'react-native-gesture-handler'
 import CheckBox from '@react-native-community/checkbox';
+
+const rightAction = ({ dispatchDeleteTask, tasklistId, taskId }) => {
+    return (
+        <View style={styles.deletedStyle}>
+            <Button
+                color='white'
+                title='DELETE'
+                onPress={() => { dispatchDeleteTask({ tasklistId, taskId }) }}
+                style={styles.deletedStyle}>Deleted</Button>
+        </View>
+    )
+}
+
 const TaskList = (props) => {
     const {
         route,
@@ -27,33 +40,32 @@ const TaskList = (props) => {
             completed
         } = data
         return (
-            <View style={styles.taskElementContainer}>
-                <View style={styles.checkBoxContainer}>
-                    <CheckBox
-                        // value={true}
-                        disabled={false}
-                        value={completed}
-                        boxType={"square"}
-                        style={styles.checkBoxStyle}
-                        onValueChange={(e) => {
-                            dispatchUpdateTask({ tasklistId, taskId, completed: e })
-                        }}
-                    />
+            <Swipeable
+                renderRightActions={() => rightAction({ dispatchDeleteTask, tasklistId, taskId })}
+            >
+                <View style={styles.taskElementContainer}>
+                    <View style={styles.checkBoxContainer}>
+                        <CheckBox
+                            // value={true}
+                            disabled={false}
+                            value={completed}
+                            boxType={"square"}
+                            style={styles.checkBoxStyle}
+                            onValueChange={(e) => {
+                                dispatchUpdateTask({ tasklistId, taskId, completed: e })
+                            }}
+                        />
+                    </View>
+                    <TextInput
+                        style={styles.taskTitle}
+                        placeholder={'Task Name'}
+                        onChangeText={(e) => {
+                            dispatchUpdateTask({ tasklistId, taskId, title: e, completed })
+                        }} autoFocus>
+                        {title}
+                    </TextInput>
                 </View>
-                <TextInput
-                    style={styles.taskTitle}
-                    placeholder={'Task Name'}
-                    onChangeText={(e) => {
-                        dispatchUpdateTask({ tasklistId, taskId, title: e, completed })
-                    }} autoFocus>
-                    {title}
-                </TextInput>
-                <Button
-                    color={'darkred'}
-                    title={'Delete'} onPress={() => {
-                        dispatchDeleteTask({ tasklistId, taskId })
-                    }} />
-            </View>
+            </Swipeable>
         )
     }
 
@@ -114,7 +126,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 60,
         backgroundColor: 'lightblue',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         alignItems: 'center'
 
     },
@@ -128,9 +140,15 @@ const styles = StyleSheet.create({
         width: 20
     },
     taskTitle: {
-        width: '70%',
+        marginLeft: 10,
+        width: '75%',
         color: 'midnightblue',
         fontSize: 20
+    },
+    deletedStyle: {
+        backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
 
