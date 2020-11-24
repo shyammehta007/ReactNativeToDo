@@ -1,26 +1,12 @@
 import React, { useState } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
-import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ListOfTaskLists from './src/components/ListOfTaskLists'
-import TaskList from './src/components/TaskList'
 import SignUpPage from './src/components/SignUpPage';
 import SignInPage from './src/components/SignInPage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-
-const HomeStack = createStackNavigator()
+import HomeStackScreen from './src/screens/HomeStackScreen'
+import Settings from './src/screens/settings'
 const Tab = createBottomTabNavigator();
-
-const HomeStackScreen = (props) => {
-  return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen name="Home" component={ListOfTaskLists} />
-      <HomeStack.Screen name="Details" component={TaskList} />
-    </HomeStack.Navigator>
-  )
-}
 
 const USERSCREEN = {
   'guest': [{
@@ -38,14 +24,6 @@ const USERSCREEN = {
     name: 'Settings',
     component: Settings
   }]
-}
-
-function Settings({ navigation }) {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings screen</Text>
-    </View>
-  );
 }
 
 export default function App() {
@@ -68,7 +46,6 @@ export default function App() {
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}
-
         tabBarOptions={{
           activeTintColor: 'tomato',
           inactiveTintColor: 'gray',
@@ -78,15 +55,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-
-const styles = StyleSheet.create({
-  screen: {
-    marginTop: 40,
-    alignItems: 'center',
-  },
-  title: {
-    padding: 20,
-    fontSize: 42,
-  },
-})
