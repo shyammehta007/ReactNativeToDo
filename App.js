@@ -7,6 +7,8 @@ import ListOfTaskLists from './components/ListOfTaskLists'
 import TaskList from './components/TaskList'
 import SignUpPage from './components/SignUpPage';
 import SignInPage from './components/SignInPage';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 const HomeStack = createStackNavigator()
 const Tab = createBottomTabNavigator();
@@ -47,19 +49,33 @@ function Settings({ navigation }) {
 }
 
 export default function App() {
-  const [isLoggedIn, setLogin] = useState(true)
+  const [isLoggedIn, setLogin] = useState(false)
   const screensLoaded = isLoggedIn ? USERSCREEN['user'] : USERSCREEN['guest']
-  const guestProps = !isLoggedIn && {
-    setLogin
-  }
   return (
     <NavigationContainer>
       <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === 'Home') {
+              iconName = focused
+                ? 'ios-information-circle'
+                : 'ios-information-circle-outline';
+            } else if (route.name === 'Settings') {
+              iconName = focused ? 'ios-list-box' : 'ios-list';
+            }
+
+            // You can return any component that you like here!
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+        })}
+
         tabBarOptions={{
           activeTintColor: 'tomato',
           inactiveTintColor: 'gray',
         }}>
-        {screensLoaded.map(({ name, component }) => <Tab.Screen name={name} component={component} key={name} guestProps={guestProps} />)}
+        {screensLoaded.map(({ name, component }) => <Tab.Screen name={name} component={component} key={name} initialParams={{ setLogin }} />)}
       </Tab.Navigator>
     </NavigationContainer>
   );

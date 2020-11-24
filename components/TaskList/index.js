@@ -83,6 +83,11 @@ const TaskList = (props) => {
             <FlatList
                 data={tasklist}
                 renderItem={({ item }) => renderTaskElement(item)}
+                ItemSeparatorComponent={() => <View
+                    style={{
+                        height: 0.5,
+                    }}
+                />}
             />
         </ScrollView>
     )

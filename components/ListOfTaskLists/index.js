@@ -58,6 +58,11 @@ const ListOfTaskLists = (props) => {
             </View>
             <FlatList
                 data={listOfTasklistArray}
+                ItemSeparatorComponent={() => <View
+                    style={{
+                        height: 0.5,
+                    }}
+                />}
                 renderItem={({ item }) => renderListElement(item)}
             />
         </View>)
