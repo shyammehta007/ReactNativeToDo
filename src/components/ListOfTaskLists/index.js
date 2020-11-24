@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Text, View, StyleSheet, TextInput, TouchableWithoutFeedback, Button, FlatList } from 'react-native'
 import { createTasklist, updateTasklist, deleteTasklist } from '../../actions/TaskListOps'
 import { Swipeable } from 'react-native-gesture-handler'
-
+import styles from './style'
 const rightAction = ({ dispatchDeleteTasklist, tasklistId }) => {
     return (
         <View style={styles.deletedStyle}>
@@ -58,6 +58,7 @@ const ListOfTaskLists = (props) => {
             </View>
             <FlatList
                 data={listOfTasklistArray}
+                keyExtractor={item => item.tasklistId}
                 ItemSeparatorComponent={() => <View
                     style={{
                         height: 0.5,
@@ -87,42 +88,7 @@ const mapStateToDispatch = dispatch => {
     }
 }
 
-const styles = StyleSheet.create({
-    homeHeader: {
-        height: 60,
-        backgroundColor: 'darkslategrey',
-        flexDirection: "row",
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    headerText: {
-        color: 'white',
-        fontSize: 18
-    },
-    listElementContainer: {
-        flexDirection: "row",
-        height: 60,
-        backgroundColor: 'darkgrey',
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-    },
-    listElementTitle: {
-        backgroundColor: 'darkgrey',
-        color: 'navy',
-        width: '75%',
-        fontSize: 20,
-        padding: 3
-    },
-    detailsViewRedirection: {
-        color: 'white',
-        fontSize: 25
-    },
-    deletedStyle: {
-        backgroundColor: 'red',
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-})
+
 
 
 

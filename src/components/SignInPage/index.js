@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { View, Text } from 'react-native'
 import Form from '../Form'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import styles from './style'
+
 const SIGNINDATA = [
     {
         name: 'UserName',
@@ -52,10 +54,10 @@ const SignInPage = ({ route }) => {
 
     }
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.container}>
             <Form data={SIGNINDATA} onSubmit={onSubmit} />
-            <Text style={{ color: 'red' }}>{errorMessage}</Text>
-            <Text style={{ color: 'yellowgreen' }}>{successMessage}</Text>
+            <Text style={styles.errorMessage}>{errorMessage}</Text>
+            <Text style={styles.successMessage}>{successMessage}</Text>
         </View>
     )
 }

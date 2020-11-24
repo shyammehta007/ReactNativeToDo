@@ -3,10 +3,10 @@ import { Text, View, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ListOfTaskLists from './components/ListOfTaskLists'
-import TaskList from './components/TaskList'
-import SignUpPage from './components/SignUpPage';
-import SignInPage from './components/SignInPage';
+import ListOfTaskLists from './src/components/ListOfTaskLists'
+import TaskList from './src/components/TaskList'
+import SignUpPage from './src/components/SignUpPage';
+import SignInPage from './src/components/SignInPage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
@@ -65,8 +65,6 @@ export default function App() {
             } else if (route.name === 'Settings') {
               iconName = focused ? 'ios-list-box' : 'ios-list';
             }
-
-            // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}

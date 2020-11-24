@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, Button } from 'react-native'
 import Form from '../Form'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import styles from './styles'
 
 const SIGNUPDATA = [
     {
@@ -50,10 +51,10 @@ const SignUpPage = ({ navigation, route }) => {
     }
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.container}>
             <Form data={SIGNUPDATA} onSubmit={onSubmit} />
-            <Text style={{ color: 'red' }}>{errorMessage}</Text>
-            <Text style={{ color: 'yellowgreen' }}>{successMessage}</Text>
+            <Text style={styles.errorMessage}>{errorMessage}</Text>
+            <Text style={styles.successMessage}>{successMessage}</Text>
             <Button
                 color='blue'
                 title='Already a User?'
