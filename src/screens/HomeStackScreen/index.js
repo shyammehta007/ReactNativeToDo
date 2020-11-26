@@ -1,7 +1,7 @@
 import React from 'react'
+import { createStackNavigator } from '@react-navigation/stack'
 import ListOfTaskLists from '../../components/ListOfTaskLists'
 import TaskList from '../../components/TaskList'
-import { createStackNavigator } from '@react-navigation/stack'
 const HomeStack = createStackNavigator()
 
 const HomeStackScreen = (props) => {

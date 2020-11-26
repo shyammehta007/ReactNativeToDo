@@ -1,11 +1,30 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-const Settings = ({ navigation }) => {
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
+import styles from './styles'
+import { logOut } from '../../actions/AuthenticationOps';
+
+const Settings = ({ dispatchLogOut, userName }) => {
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Settings screen</Text>
+            <TouchableOpacity onPress={() => { dispatchLogOut() }} style={styles.container}>
+                <Ionicons name='exit' size={35} color={'white'} />
+                <Text style={styles.textStyle}>Log-Out: {userName}</Text>
+            </TouchableOpacity>
         </View>
     );
 }
 
-export default Settings
+const mapStateToProps = state => {
+    const {
+        Authentication: {
+            userName
+        }
+    } = state
+    return {
+        userName
+    }
+}
+export default connect(mapStateToProps, { dispatchLogOut: logOut })(Settings)

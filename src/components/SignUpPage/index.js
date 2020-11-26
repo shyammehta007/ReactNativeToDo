@@ -1,53 +1,23 @@
 import React, { useState } from 'react'
 import { View, Text, Button } from 'react-native'
 import Form from '../Form'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './styles'
-
-const SIGNUPDATA = [
-    {
-        name: 'UserName',
-        label: 'UserName'
-    },
-    {
-        name: 'Password',
-        label: 'Password'
-    }
-]
-
-
-const SignUpPage = ({ navigation, route }) => {
+import { connect } from 'react-redux';
+import { signUp } from '../../actions/AuthenticationOps';
+import { SIGNUPDATA, FORM_MESSAGES } from '../../constants/formData'
+const SignUpPage = ({ navigation, route, dispatchSignUp }) => {
     const [errorMessage, setError] = useState('')
-    const [successMessage, setMessage] = useState('')
-    const {
-        params: {
-            setLogin
-        } } = route
-    const onSubmit = async (data) => {
+    const [successMessage, setSuccess] = useState('')
+    const onSubmit = (data) => {
         const {
             UserName,
             Password
         } = data
-        console.log(Password)
         if (!UserName || !Password) {
-            setError('Both the Fields are mandetory')
+            setError(FORM_MESSAGES.ALL_FIELDS_REQUIRED)
             return
         }
-        try {
-            const value = await AsyncStorage.getItem(UserName)
-            if (value) {
-                setError('User already exists with this UserName')
-                return
-            }
-            setError('')
-            setMessage('Account Successfull created ... Please wait')
-            await AsyncStorage.setItem(UserName, Password)
-            setLogin(true)
-        }
-        catch (e) {
-            console.log(e)
-            setError('Error while Signing Up')
-        }
+        dispatchSignUp(UserName)
     }
 
     return (
@@ -64,4 +34,4 @@ const SignUpPage = ({ navigation, route }) => {
     )
 }
 
-export default SignUpPage
+export default connect(null, { dispatchSignUp: signUp })(SignUpPage) 

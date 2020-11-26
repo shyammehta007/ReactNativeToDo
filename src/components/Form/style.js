@@ -3,20 +3,20 @@ const styles = StyleSheet.create({
     fieldLabel: {
         fontSize: 18,
         color: 'olive',
-        marginBottom: 5
+        marginBottom: 20
     },
     feildInput: {
         borderWidth: 1,
         fontSize: 18,
         borderColor: 'slategrey',
         color: 'black',
-        height: 30,
+        height: 40,
         padding: 2
     },
     formContainer: {
         backgroundColor: 'lightblue',
-        height: '40%',
-        width: '50%',
+        height: '60%',
+        width: '70%',
         justifyContent: "space-evenly",
         padding: 10,
         borderRadius: 20,

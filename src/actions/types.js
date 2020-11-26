@@ -6,7 +6,13 @@ const types = {
 
     TASK_CREATE: 'TASK_CREATE',
     TASK_UPDATE: 'TASK_UPDATE',
-    TASK_DELETE: 'TASK_DELETE'
+    TASK_DELETE: 'TASK_DELETE',
+
+    SIGN_IN: 'SIGN_IN',
+    SIGN_UP: 'SIGN_UP',
+    LOG_OUT: 'LOG_OUT',
+
+    TOGGLE_LOADING: 'TOGGLE_LOADING'
 }
 
 export default types

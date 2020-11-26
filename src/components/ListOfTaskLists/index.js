@@ -1,16 +1,35 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Text, View, StyleSheet, TextInput, TouchableWithoutFeedback, Button, FlatList } from 'react-native'
-import { createTasklist, updateTasklist, deleteTasklist } from '../../actions/TaskListOps'
+import { Text, View, TextInput, TouchableWithoutFeedback, Button, FlatList, Alert } from 'react-native'
 import { Swipeable } from 'react-native-gesture-handler'
 import styles from './style'
-const rightAction = ({ dispatchDeleteTasklist, tasklistId }) => {
+import { createTasklist, updateTasklist, deleteTasklist } from '../../actions/TaskListOps'
+import { MODAL_MESSAGES } from '../../constants/modalMessages'
+
+const deleteAlert = ({ dispatchDeleteTasklist, tasklistId }) => {
+    return Alert.alert(
+        'Delete',
+        MODAL_MESSAGES.TASKLIST_DELETE_MESSAGE,
+        [
+            {
+                text: 'Delete',
+                onPress: () => { dispatchDeleteTasklist({ tasklistId }) },
+            },
+            {
+                text: 'Cancel',
+                style: 'cancel'
+            }
+        ]
+    )
+}
+
+const rightAction = (props) => {
     return (
         <View style={styles.deletedStyle}>
             <Button
                 color='white'
                 title='DELETE'
-                onPress={() => { dispatchDeleteTasklist({ tasklistId }) }}
+                onPress={() => { deleteAlert(props) }}
                 style={styles.deletedStyle}>Deleted</Button>
         </View>
     )
@@ -32,7 +51,7 @@ const ListOfTaskLists = (props) => {
                 <View style={styles.listElementContainer}>
                     <TextInput
                         style={styles.listElementTitle}
-                        onChangeText={(e) => {
+                        onChangeText={async (e) => {
                             dispatchUpdateTasklist({ tasklistId, title: e })
                         }} autoFocus>
                         {title}
@@ -87,9 +106,5 @@ const mapStateToDispatch = dispatch => {
         dispatchDeleteTasklist: details => dispatch(deleteTasklist(details))
     }
 }
-
-
-
-
 
 export default connect(mapStateToProps, mapStateToDispatch)(ListOfTaskLists)

@@ -1,17 +1,37 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button, Text, View, StyleSheet, ScrollView, TextInput } from 'react-native'
-import { createTask, updateTask, deleteTask } from '../../actions/TaskOps'
+import { Button, Text, View, TextInput, Alert } from 'react-native'
 import { FlatList, Swipeable } from 'react-native-gesture-handler'
 import CheckBox from '@react-native-community/checkbox';
 import styles from './style'
-const rightAction = ({ dispatchDeleteTask, tasklistId, taskId }) => {
+import { createTask, updateTask, deleteTask } from '../../actions/TaskOps'
+import { MODAL_MESSAGES } from '../../constants/modalMessages';
+
+const deleteAlert = ({ dispatchDeleteTask, taskId, tasklistId }) => {
+    return Alert.alert(
+        'Delete',
+        MODAL_MESSAGES.TASK_DELETE_MESSAGE,
+        [
+            {
+                text: 'Delete',
+                onPress: () => { dispatchDeleteTask({ tasklistId, taskId }) },
+            },
+            {
+                text: 'Cancel',
+                style: 'cancel'
+            }
+        ],
+        { cancelable: false }
+    )
+}
+
+const rightAction = (props) => {
     return (
         <View style={styles.deletedStyle}>
             <Button
                 color='white'
                 title='DELETE'
-                onPress={() => { dispatchDeleteTask({ tasklistId, taskId }) }}
+                onPress={() => { deleteAlert(props) }}
                 style={styles.deletedStyle}>Deleted</Button>
         </View>
     )

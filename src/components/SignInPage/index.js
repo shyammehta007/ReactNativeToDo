@@ -1,57 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text } from 'react-native'
-import Form from '../Form'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { connect } from 'react-redux';
 import styles from './style'
+import { signIn } from '../../actions/AuthenticationOps'
+import Form from '../Form'
+import { SIGNINDATA, FORM_MESSAGES } from '../../constants/formData'
 
-const SIGNINDATA = [
-    {
-        name: 'UserName',
-        label: 'UserName'
-    },
-    {
-        name: 'Password',
-        label: 'Password'
-    }
-]
-
-const SignInPage = ({ route }) => {
+const SignInPage = ({ dispatchSignIn }) => {
     const [errorMessage, setError] = useState('')
     const [successMessage, setMessage] = useState('')
-    const {
-        params: {
-            setLogin
-        } } = route
-
-
-    const onSubmit = async (data) => {
+    const onSubmit = (data) => {
         const {
             UserName,
             Password
         } = data
         if (!UserName || !Password) {
-            setError('Both the Fields are mandetory')
+            setError(FORM_MESSAGES.ALL_FIELDS_REQUIRED)
             return
         }
-        try {
-            const value = await AsyncStorage.getItem(UserName)
-            console.log(value)
-            if (!value) {
-                setError('User does not exist')
-                return
-            }
-            if (value !== Password) {
-                setError('UserName and Password does not match')
-                return
-            }
-            setError('')
-            setMessage('Login Successful.... Please Wait')
-            setTimeout(() => { setLogin(true) }, 1000)
-
-        } catch (e) {
-            setError('Some error while signing up')
-        }
-
+        setError('')
+        dispatchSignIn(UserName)
     }
     return (
         <View style={styles.container}>
@@ -62,4 +30,4 @@ const SignInPage = ({ route }) => {
     )
 }
 
-export default SignInPage
+export default connect(null, { dispatchSignIn: signIn })(SignInPage) 
