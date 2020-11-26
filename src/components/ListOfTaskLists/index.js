@@ -8,8 +8,8 @@ import { MODAL_MESSAGES } from '../../constants/modalMessages'
 
 const deleteAlert = ({ dispatchDeleteTasklist, tasklistId }) => {
     return Alert.alert(
-        'Delete',
         MODAL_MESSAGES.TASKLIST_DELETE_MESSAGE,
+        '',
         [
             {
                 text: 'Delete',
