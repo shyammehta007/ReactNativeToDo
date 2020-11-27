@@ -1,48 +1,43 @@
-import produce from 'immer'
-import Type from '../actions/types.js'
-import { createTasklist } from '../helper/TaskListOps'
+import produce from 'immer';
+
+import Type from '../actions/types.js';
+import {createTasklist} from '../helper/TaskListOps';
+
 const initialState = {
-    listOfTasklistArray: []
-}
+  listOfTasklistArray: [],
+};
 
-const listOfTasklistReducer = (state = initialState, action) => (
-    produce(state, draftState => {
-        const {
-            listOfTasklistArray
-        } = draftState
-        const {
-            type,
-            payload = {}
-        } = action
-        const {
-            title,
-            tasklistId
-        } = payload
-        let tasklist
-        switch (type) {
-            case Type.TASKLIST_CREATE:
-                tasklist = createTasklist()
-                listOfTasklistArray.push(tasklist)
-                break
+const listOfTasklistReducer = (state = initialState, action) =>
+  produce(state, (draftState) => {
+    const {listOfTasklistArray} = draftState;
+    const {type, payload = {}} = action;
+    const {title, tasklistId} = payload;
+    let tasklist;
+    switch (type) {
+      case Type.TASKLIST_CREATE:
+        tasklist = createTasklist();
+        listOfTasklistArray.push(tasklist);
+        break;
 
-            case Type.TASKLIST_UPDATE:
-                listOfTasklistArray.forEach((tasklist) => {
-                    if (tasklist.tasklistId === tasklistId) {
-                        tasklist.title = title
-                    }
-                })
-                break
+      case Type.TASKLIST_UPDATE:
+        listOfTasklistArray.forEach((tasklistTemp) => {
+          if (tasklistTemp.tasklistId === tasklistId) {
+            tasklist.title = title;
+          }
+        });
+        break;
 
-            case Type.TASKLIST_DELETE:
-                const id = listOfTasklistArray.findIndex(tasklist => tasklist.tasklistId === tasklistId)
-                if (id >= 0) {
-                    listOfTasklistArray.splice(id, 1)
-                }
-                break
-
-            default:
+      case Type.TASKLIST_DELETE:
+        const id = listOfTasklistArray.findIndex(
+          (tasklistTemp) => tasklistTemp.tasklistId === tasklistId,
+        );
+        if (id >= 0) {
+          listOfTasklistArray.splice(id, 1);
         }
-    })
-)
+        break;
 
-export default listOfTasklistReducer
+      default:
+    }
+  });
+
+export default listOfTasklistReducer;

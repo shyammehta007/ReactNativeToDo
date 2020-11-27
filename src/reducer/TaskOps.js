@@ -1,46 +1,41 @@
-import produce from 'immer'
-import Type from '../actions/types.js'
-import { addTaskInMap, updateTaskInMap, deleteTaskInMap, deleteTasklistInMap } from '../helper/TaskOps'
+import produce from 'immer';
+
+import Type from '../actions/types.js';
+import {
+  addTaskInMap,
+  updateTaskInMap,
+  deleteTaskInMap,
+  deleteTasklistInMap,
+} from '../helper/TaskOps';
 
 const initialState = {
-    listToTaskMap: {}
-}
+  listToTaskMap: {},
+};
 
-const listToTaskReducer = (state = initialState, action) => (
-    produce(state, draftState => {
-        let {
-            listToTaskMap
-        } = draftState
-        const {
-            type,
-            payload = {}
-        } = action
-        const {
-            tasklistId,
-            taskId,
-            completed,
-            title
-        } = payload
-        switch (type) {
-            case Type.TASK_CREATE:
-                addTaskInMap({ tasklistId, listToTaskMap })
-                break
+const listToTaskReducer = (state = initialState, action) =>
+  produce(state, (draftState) => {
+    let {listToTaskMap} = draftState;
+    const {type, payload = {}} = action;
+    const {tasklistId, taskId, completed, title} = payload;
+    switch (type) {
+      case Type.TASK_CREATE:
+        addTaskInMap({tasklistId, listToTaskMap});
+        break;
 
-            case Type.TASK_UPDATE:
-                updateTaskInMap({ listToTaskMap, taskId, tasklistId, title, completed })
-                break
+      case Type.TASK_UPDATE:
+        updateTaskInMap({listToTaskMap, taskId, tasklistId, title, completed});
+        break;
 
-            case Type.TASK_DELETE:
-                deleteTaskInMap({ listToTaskMap, tasklistId, taskId })
-                break
+      case Type.TASK_DELETE:
+        deleteTaskInMap({listToTaskMap, tasklistId, taskId});
+        break;
 
-            case Type.TASKLIST_DELETE:
-                deleteTasklistInMap({ listToTaskMap, tasklistId })
-                break
+      case Type.TASKLIST_DELETE:
+        deleteTasklistInMap({listToTaskMap, tasklistId});
+        break;
 
-            default:
-        }
-    })
-)
+      default:
+    }
+  });
 
-export default listToTaskReducer
+export default listToTaskReducer;

@@ -10,6 +10,13 @@ UI changes /
 Remove Warnings /
 reducer immer   /
 Remove hard coded data and create constants /
-On delete modal
 
+On delete modal 
+spacing/
+destructuring the props
+color constants
+remove duplicate code/
+reducer state update method
 lodash usecase and why do we use?
+ESLint rules/
+
