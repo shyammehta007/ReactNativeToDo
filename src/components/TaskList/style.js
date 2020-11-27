@@ -1,21 +1,23 @@
 import {StyleSheet} from 'react-native';
 
+import {COLORS} from '../../constants/colors';
+
 const styles = StyleSheet.create({
   titleContainer: {
     height: 60,
-    backgroundColor: 'grey',
+    backgroundColor: COLORS.GREY,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   tasklistTitle: {
-    color: 'white',
+    color: COLORS.WHITE,
     fontSize: 20,
   },
   taskElementContainer: {
     flexDirection: 'row',
     height: 60,
-    backgroundColor: 'lightblue',
+    backgroundColor: COLORS.LIGHTBLUE,
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
@@ -31,11 +33,11 @@ const styles = StyleSheet.create({
   taskTitle: {
     marginLeft: 10,
     width: '75%',
-    color: 'midnightblue',
+    color: COLORS.LIGHTBLUE,
     fontSize: 20,
   },
   deletedStyle: {
-    backgroundColor: 'red',
+    backgroundColor: COLORS.RED,
     justifyContent: 'center',
     alignItems: 'center',
   },

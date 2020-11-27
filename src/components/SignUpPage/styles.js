@@ -1,5 +1,7 @@
 import {StyleSheet} from 'react-native';
 
+import {COLORS} from '../../constants/colors';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -7,10 +9,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   errorMessage: {
-    color: 'red',
-  },
-  successMessage: {
-    color: 'yellowgreen',
+    color: COLORS.RED,
   },
 });
 

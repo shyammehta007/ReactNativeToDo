@@ -1,37 +1,39 @@
 import {StyleSheet} from 'react-native';
 
+import {COLORS} from '../../constants/colors';
+
 const styles = StyleSheet.create({
   homeHeader: {
     height: 60,
-    backgroundColor: 'darkslategrey',
+    backgroundColor: COLORS.DARKSTATEGREY,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   headerText: {
-    color: 'white',
+    color: COLORS.WHITE,
     fontSize: 18,
   },
   listElementContainer: {
     flexDirection: 'row',
     height: 60,
-    backgroundColor: 'darkgrey',
+    backgroundColor: COLORS.DARKGREY,
     justifyContent: 'space-evenly',
     alignItems: 'center',
   },
   listElementTitle: {
-    backgroundColor: 'darkgrey',
-    color: 'navy',
+    backgroundColor: COLORS.DARKGREY,
+    color: COLORS.NAVY,
     width: '75%',
     fontSize: 20,
     padding: 3,
   },
   detailsViewRedirection: {
-    color: 'white',
+    color: COLORS.WHITE,
     fontSize: 25,
   },
   deletedStyle: {
-    backgroundColor: 'red',
+    backgroundColor: COLORS.RED,
     justifyContent: 'center',
     alignItems: 'center',
   },

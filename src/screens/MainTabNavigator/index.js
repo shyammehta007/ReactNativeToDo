@@ -3,7 +3,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import HomeStackScreen from '../HomeStackScreen';
-import Settings from '../settings';
+import Settings from '../Settings';
+import {COLORS} from '../../constants/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,8 +23,8 @@ const MainTabNavigator = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'tomato',
-        inactiveTintColor: 'gray',
+        activeTintColor: COLORS.TOMATO,
+        inactiveTintColor: COLORS.GREY,
         labelStyle: {
           fontSize: 20,
         },

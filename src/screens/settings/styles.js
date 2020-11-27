@@ -1,5 +1,7 @@
 import {StyleSheet} from 'react-native';
 
+import {COLORS} from '../../constants/colors';
+
 const styles = StyleSheet.create({
   screenStyle: {
     flex: 1,
@@ -11,10 +13,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     padding: 5,
-    backgroundColor: 'firebrick',
+    backgroundColor: COLORS.FIREBRICK,
   },
   textStyle: {
-    color: 'white',
+    color: COLORS.WHITE,
     minWidth: 150,
     textAlign: 'center',
     maxWidth: 200,

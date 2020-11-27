@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {COLORS} from '../../constants/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -7,7 +8,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   errorMessage: {
-    color: 'red',
+    color: COLORS.RED,
   },
 });
 

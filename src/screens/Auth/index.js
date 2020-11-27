@@ -7,6 +7,7 @@ import SignUpPage from '../../components/SignUpPage';
 import SignInPage from '../../components/SignInPage';
 import MainTabNavigator from '../MainTabNavigator';
 import Loader from '../Loader';
+import {COLORS} from '../../constants/colors';
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -26,8 +27,8 @@ const Auth = (props) => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: 'tomato',
-        inactiveTintColor: 'gray',
+        activeTintColor: COLORS.TOMATO,
+        inactiveTintColor: COLORS.GREY,
         labelStyle: {
           fontSize: 20,
         },

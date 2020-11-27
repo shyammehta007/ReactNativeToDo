@@ -10,7 +10,6 @@ import {AUTHDATA, FORM_MESSAGES} from '../../constants/formData';
 const SignUpPage = (props) => {
   const {navigation, dispatchSignUp} = props;
   const [errorMessage, setError] = useState('');
-  const [successMessage, setSuccess] = useState('');
   const onSubmit = (data) => {
     const {UserName, Password} = data;
     if (!UserName || !Password) {
@@ -24,7 +23,6 @@ const SignUpPage = (props) => {
     <View style={styles.container}>
       <Form data={AUTHDATA} onSubmit={onSubmit} />
       <Text style={styles.errorMessage}>{errorMessage}</Text>
-      <Text style={styles.successMessage}>{successMessage}</Text>
       <Button
         color="blue"
         title="Already a User?"

@@ -1,0 +1,17 @@
+export const COLORS = {
+  BLACK: '#000000',
+  BLUE: '#0000ff',
+  OLIVE: '#808000',
+  LIGHTBLUE: '#add8e6',
+  SLATEGREY: '#708090',
+  PURPLE: '#800080',
+  DARKSTATEGREY: '#2f4f4f',
+  WHITE: '#ffffff',
+  GREY: '#808080',
+  DARKGREY: '#a9a9a9',
+  NAVY: '#000080',
+  RED: '#ff0000',
+  YELLOWGREEN: '#9acd32',
+  TOMATO: '#ff6347',
+  FIREBRICK: '#b22222',
+};
