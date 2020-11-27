@@ -14,7 +14,7 @@ Remove hard coded data and create constants /
 On delete modal 
 spacing/
 destructuring the props/
-color constants
+color constants/
 remove duplicate code/
 reducer state update method
 lodash usecase and why do we use?/

@@ -70,7 +70,7 @@ const ListOfTaskLists = (props) => {
         <View style={styles.listElementContainer}>
           <TextInput
             style={styles.listElementTitle}
-            onChangeText={async (e) => {
+            onChangeText={(e) => {
               dispatchUpdateTasklist({tasklistId, title: e});
             }}
             autoFocus>

@@ -22,7 +22,7 @@ const listOfTasklistReducer = (state = initialState, action) =>
       case Type.TASKLIST_UPDATE:
         listOfTasklistArray.forEach((tasklistTemp) => {
           if (tasklistTemp.tasklistId === tasklistId) {
-            tasklist.title = title;
+            tasklistTemp.title = title;
           }
         });
         break;

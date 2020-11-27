@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   taskTitle: {
     marginLeft: 10,
     width: '75%',
-    color: COLORS.LIGHTBLUE,
+    color: COLORS.BLUE,
     fontSize: 20,
   },
   deletedStyle: {
