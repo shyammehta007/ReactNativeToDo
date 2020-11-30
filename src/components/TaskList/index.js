@@ -1,49 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
-import {Button, Text, View, TextInput, Alert} from 'react-native';
+import {Button, Text, View, TextInput} from 'react-native';
 import {FlatList, Swipeable} from 'react-native-gesture-handler';
 import CheckBox from '@react-native-community/checkbox';
 
 import styles from './style';
 import {createTask, updateTask, deleteTask} from '../../actions/TaskOps';
 import {MODAL_MESSAGES} from '../../constants/modalMessages';
-
-const deleteAlert = (props) => {
-  const {dispatchDeleteTask, taskId, tasklistId} = props;
-  return Alert.alert(
-    MODAL_MESSAGES.TASK_DELETE_MESSAGE,
-    '',
-    [
-      {
-        text: 'Delete',
-        onPress: () => {
-          dispatchDeleteTask({tasklistId, taskId});
-        },
-      },
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-    ],
-    {cancelable: false},
-  );
-};
-
-const rightAction = (props) => {
-  return (
-    <View style={styles.deletedStyle}>
-      <Button
-        color="white"
-        title="DELETE"
-        onPress={() => {
-          deleteAlert(props);
-        }}
-        style={styles.deletedStyle}>
-        Deleted
-      </Button>
-    </View>
-  );
-};
+import AskForConformationModal from '../AskForConformationModal';
 
 const TaskList = (props) => {
   const {
@@ -63,13 +27,30 @@ const TaskList = (props) => {
   const {title: tasklistTitle} = tasklistHeading;
   const tasklist = listToTaskMap[tasklistId] || [];
 
+  const [isModalOpen, toggleModal] = useState(false);
+  const [modalOpenerDetails, setModalDetails] = useState({});
+
+  const rightAction = (prop) => {
+    return (
+      <View style={styles.deletedStyle}>
+        <Button
+          color="white"
+          title="DELETE"
+          onPress={() => {
+            setModalDetails(prop);
+            toggleModal((prevState) => !prevState);
+          }}
+          style={styles.deletedStyle}>
+          Deleted
+        </Button>
+      </View>
+    );
+  };
+
   const renderTaskElement = (data) => {
     const {title, taskId, completed} = data;
     return (
-      <Swipeable
-        renderRightActions={() =>
-          rightAction({dispatchDeleteTask, tasklistId, taskId})
-        }>
+      <Swipeable renderRightActions={() => rightAction({tasklistId, taskId})}>
         <View style={styles.taskElementContainer}>
           <View style={styles.checkBoxContainer}>
             <CheckBox
@@ -97,6 +78,11 @@ const TaskList = (props) => {
     );
   };
 
+  const onSubmitAction = () => {
+    const {tasklistId: tlId, taskId} = modalOpenerDetails;
+    dispatchDeleteTask({taskId, tasklistId: tlId});
+  };
+
   return (
     <>
       <View style={styles.titleContainer}>
@@ -115,6 +101,14 @@ const TaskList = (props) => {
         renderItem={({item}) => renderTaskElement(item)}
         ItemSeparatorComponent={() => <View style={styles.seperatorStyle} />}
       />
+      {isModalOpen && (
+        <AskForConformationModal
+          messageHeading={MODAL_MESSAGES.TASK_DELETE_MESSAGE}
+          onSubmitAction={onSubmitAction}
+          toggleModal={toggleModal}
+          isOpen={isModalOpen}
+        />
+      )}
     </>
   );
 };

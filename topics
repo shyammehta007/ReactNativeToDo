@@ -19,4 +19,5 @@ remove duplicate code/
 reducer state update method
 lodash usecase and why do we use?/
 ESLint rules/
+Set absolute path
 

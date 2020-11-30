@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {View, Text, Button} from 'react-native';
-import Form from '../Form';
-import styles from './styles';
 import {connect} from 'react-redux';
 
+import styles from './styles';
+import Form from '../Form';
 import {signUp} from '../../actions/AuthenticationOps';
 import {AUTHDATA, FORM_MESSAGES} from '../../constants/formData';
 
