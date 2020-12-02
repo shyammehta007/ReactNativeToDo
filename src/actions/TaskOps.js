@@ -1,3 +1,4 @@
+import {updatedTaskDetails, deletedTaskDetails} from '../helper/TaskOps.js';
 import Types from './types.js';
 
 export const createTask = (details) => {
@@ -7,23 +8,28 @@ export const createTask = (details) => {
   };
 };
 
-export const deleteTask = (details) => {
+export const deleteTask = (dispatchedData) => {
+  const {tasklistId, taskId, tasklist} = dispatchedData;
+  const data = deletedTaskDetails({taskId, tasklist});
+  const payload = {
+    tasklistId,
+    ...data,
+  };
   return {
     type: Types.TASK_DELETE,
-    payload: details,
+    payload,
   };
 };
 
-export const updateTask = (details) => {
+export const updateTask = (dispatchedData) => {
+  const {tasklist, tasklistId, taskId, updates} = dispatchedData;
+  const data = updatedTaskDetails({tasklist, taskId, updates});
+  const payload = {
+    tasklistId,
+    ...data,
+  };
   return {
     type: Types.TASK_UPDATE,
-    payload: details,
-  };
-};
-
-export const readTasks = (details) => {
-  return {
-    type: Types.TASK_READ,
-    payload: details,
+    payload,
   };
 };

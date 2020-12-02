@@ -3,42 +3,80 @@ export const createTask = (title = '', completed) => {
   return {
     taskId,
     title,
-    completed,
+    completed: false,
   };
 };
 
-export const addTaskInMap = ({listToTaskMap, tasklistId}) => {
-  let tasklist = listToTaskMap[tasklistId] || [];
-  tasklist.push(createTask());
-  listToTaskMap[tasklistId] = tasklist;
-};
-
-export const updateTaskInMap = ({
-  listToTaskMap,
-  tasklistId,
-  taskId,
-  title,
-  completed,
-}) => {
-  const tasklist = listToTaskMap[tasklistId] || [];
-  if (tasklist.length) {
-    tasklist.forEach((task) => {
-      if (task.taskId === taskId) {
-        title && (task.title = title);
-        task.completed = completed;
-      }
-    });
-  }
-};
-
-export const deleteTaskInMap = ({listToTaskMap, tasklistId, taskId}) => {
-  let tasklist = listToTaskMap[tasklistId] || [];
-  if (tasklist.length) {
-    tasklist = tasklist.filter((task) => task.taskId !== taskId);
-    listToTaskMap[tasklistId] = tasklist;
-  }
-};
-
 export const deleteTasklistInMap = ({listToTaskMap, tasklistId}) => {
+  const tasklist = listToTaskMap[tasklistId] || [];
+  let completedCount = 0;
+  let uncompletedCount = 0;
+  tasklist.reduce((result, current) => {
+    if (current.completed === true) {
+      completedCount += 1;
+    } else {
+      uncompletedCount += 1;
+    }
+    return result;
+  }, []);
   delete listToTaskMap[tasklistId];
+  return {
+    completedCount,
+    uncompletedCount,
+  };
+};
+
+export const updatedTaskDetails = (data) => {
+  const {tasklist, taskId, updates} = data;
+  const updatedTaskIndex = tasklist.findIndex((task) => task.taskId === taskId);
+  const task = tasklist[updatedTaskIndex];
+  const {completed, title} = updates;
+  console.log(completed, title);
+  if (title !== undefined) {
+    return {
+      updatedTaskIndex,
+      updatedTitle: title,
+      updatedCompleted: task.completed,
+      completedCountUpdate: 0,
+      uncompletedCountUpdate: 0,
+    };
+  }
+  if (completed === true) {
+    return {
+      updatedTaskIndex,
+      updatedTitle: task.title,
+      updatedCompleted: completed,
+      completedCountUpdate: 1,
+      uncompletedCountUpdate: -1,
+    };
+  } else {
+    return {
+      updatedTaskIndex,
+      updatedTitle: task.title,
+      updatedCompleted: completed,
+      completedCountUpdate: -1,
+      uncompletedCountUpdate: 1,
+    };
+  }
+};
+
+export const deletedTaskDetails = (data) => {
+  const {taskId, tasklist} = data;
+  const deletedTaskIndex = tasklist.findIndex(
+    (tempTask) => tempTask.taskId === taskId,
+  );
+  const task = tasklist[deletedTaskIndex];
+  if (task.completed) {
+    return {
+      deletedTaskIndex,
+      completedCountUpdate: -1,
+      uncompletedCountUpdate: 0,
+    };
+  } else {
+    return {
+      deletedTaskIndex,
+      completedCountUpdate: 0,
+      uncompletedCountUpdate: -1,
+    };
+  }
 };

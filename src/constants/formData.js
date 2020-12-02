@@ -1,7 +1,7 @@
 export const AUTHDATA = [
   {
     name: 'UserName',
-    label: 'UserName',
+    label: 'User Name',
   },
   {
     name: 'Password',

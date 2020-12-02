@@ -12,6 +12,8 @@ const TYPES = {
   LOG_OUT: 'LOG_OUT',
 
   TOGGLE_LOADING: 'TOGGLE_LOADING',
+
+  CLEAR_DATA: 'CLEAR_DATA',
 };
 
 export default TYPES;

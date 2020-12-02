@@ -1,3 +1,4 @@
+import {findDeletedTasklistId} from '../helper/TaskListOps.js';
 import Types from './types.js';
 
 export const createTasklist = (details) => {
@@ -14,16 +15,11 @@ export const updateTasklist = (details) => {
   };
 };
 
-export const deleteTasklist = (details) => {
+export const deleteTasklist = ({details, tasklistArray}) => {
+  const deletedIndex = findDeletedTasklistId(details, tasklistArray);
+  const payload = {...details, deletedTasklistIndex: deletedIndex};
   return {
     type: Types.TASKLIST_DELETE,
-    payload: details,
-  };
-};
-
-export const readTasklist = (details) => {
-  return {
-    type: Types.TASKLIST_READ,
-    payload: details,
+    payload,
   };
 };

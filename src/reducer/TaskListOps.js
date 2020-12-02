@@ -5,22 +5,23 @@ import {createTasklist} from '../helper/TaskListOps';
 
 const initialState = {
   listOfTasklistArray: [],
+  totalNoOfTaskList: 0,
 };
 
 const listOfTasklistReducer = (state = initialState, action) =>
   produce(state, (draftState) => {
-    const {listOfTasklistArray} = draftState;
+    let {listOfTasklistArray} = draftState;
     const {type, payload = {}} = action;
-    const {title, tasklistId} = payload;
-    let tasklist;
+    const {title, tasklistId, deletedTasklistIndex} = payload;
     switch (type) {
       case Type.TASKLIST_CREATE:
-        tasklist = createTasklist();
-        listOfTasklistArray.push(tasklist);
+        const newTasklist = createTasklist();
+        draftState.listOfTasklistArray.push(newTasklist);
+        draftState.totalNoOfTaskList = draftState.totalNoOfTaskList + 1;
         break;
 
       case Type.TASKLIST_UPDATE:
-        listOfTasklistArray.forEach((tasklistTemp) => {
+        draftState.listOfTasklistArray.forEach((tasklistTemp) => {
           if (tasklistTemp.tasklistId === tasklistId) {
             tasklistTemp.title = title;
           }
@@ -28,14 +29,14 @@ const listOfTasklistReducer = (state = initialState, action) =>
         break;
 
       case Type.TASKLIST_DELETE:
-        const id = listOfTasklistArray.findIndex(
-          (tasklistTemp) => tasklistTemp.tasklistId === tasklistId,
-        );
-        if (id >= 0) {
-          listOfTasklistArray.splice(id, 1);
-        }
-        break;
+        draftState.totalNoOfTaskList = draftState.totalNoOfTaskList - 1;
+        draftState.listOfTasklistArray.splice(deletedTasklistIndex, 1);
 
+        break;
+      case Type.CLEAR_DATA:
+        draftState.totalNoOfTaskList = 0;
+        draftState.listOfTasklistArray.splice(0, listOfTasklistArray.length);
+        break;
       default:
     }
   });

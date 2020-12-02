@@ -9,16 +9,15 @@ const setStorageData = async ({userName, userToken}) => {
   ]);
 };
 
-// TO_DO
-// const getStorageData = async () => {
-//   const data = await AsyncStorage.multiGet(['taskAppToken', 'userName']);
-//   const userToken = data[0][1] || null;
-//   const userName = data[1][1] || '';
-//   return {
-//     userName,
-//     userToken,
-//   };
-// };
+const getStorageData = async () => {
+  const data = await AsyncStorage.multiGet(['taskAppToken', 'userName']);
+  const userToken = data[0][1] || null;
+  const userName = data[1][1] || '';
+  return {
+    userName,
+    userToken,
+  };
+};
 
 const removeStorageData = async () => {
   await AsyncStorage.multiRemove(['taskAppToken', 'userName']);
@@ -54,9 +53,26 @@ export const signUp = (userName) => async (dispatch) => {
   dispatch(toggleLoading());
 };
 
+export const tokenStorageChecking = () => async (dispatch) => {
+  const {userName, userToken} = await getStorageData();
+  dispatch({
+    type: TYPE.SIGN_IN,
+    payload: {
+      userToken,
+      userName,
+    },
+  });
+};
+
 export const logOut = () => async (dispatch) => {
   await removeStorageData();
   dispatch({
     type: TYPE.LOG_OUT,
+  });
+};
+
+export const clearStore = () => (dispatch) => {
+  dispatch({
+    type: TYPE.CLEAR_DATA,
   });
 };

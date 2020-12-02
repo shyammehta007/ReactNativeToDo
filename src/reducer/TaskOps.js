@@ -1,39 +1,67 @@
 import produce from 'immer';
 
 import Type from '../actions/types.js';
-import {
-  addTaskInMap,
-  updateTaskInMap,
-  deleteTaskInMap,
-  deleteTasklistInMap,
-} from '../helper/TaskOps';
+import {deleteTasklistInMap, createTask} from '../helper/TaskOps';
 
 const initialState = {
   listToTaskMap: {},
+  totalCompletedTask: 0,
+  totalUncompletedTask: 0,
 };
 
 const listToTaskReducer = (state = initialState, action) =>
   produce(state, (draftState) => {
     let {listToTaskMap} = draftState;
     const {type, payload = {}} = action;
-    const {tasklistId, taskId, completed, title} = payload;
+    const {
+      tasklistId,
+      updatedTaskIndex,
+      deletedTaskIndex,
+      updatedTitle,
+      updatedCompleted,
+      completedCountUpdate,
+      uncompletedCountUpdate,
+    } = payload;
+    const tasklist = draftState.listToTaskMap[tasklistId] || [];
     switch (type) {
       case Type.TASK_CREATE:
-        addTaskInMap({tasklistId, listToTaskMap});
+        const newTask = createTask();
+        tasklist.push(newTask);
+        draftState.listToTaskMap[tasklistId] = tasklist;
+        draftState.totalUncompletedTask += 1;
         break;
 
       case Type.TASK_UPDATE:
-        updateTaskInMap({listToTaskMap, taskId, tasklistId, title, completed});
+        const updatetargetlist = draftState.listToTaskMap[tasklistId];
+        updatetargetlist[updatedTaskIndex].title = updatedTitle;
+        updatetargetlist[updatedTaskIndex].completed = updatedCompleted;
+        draftState.totalCompletedTask += completedCountUpdate;
+        draftState.totalUncompletedTask += uncompletedCountUpdate;
         break;
 
       case Type.TASK_DELETE:
-        deleteTaskInMap({listToTaskMap, tasklistId, taskId});
+        const deleteTargetlist = draftState.listToTaskMap[tasklistId];
+        deleteTargetlist.splice(deletedTaskIndex, 1);
+        draftState.totalCompletedTask += completedCountUpdate;
+        draftState.totalUncompletedTask += uncompletedCountUpdate;
         break;
 
       case Type.TASKLIST_DELETE:
-        deleteTasklistInMap({listToTaskMap, tasklistId});
+        const {completedCount, uncompletedCount} = deleteTasklistInMap({
+          listToTaskMap,
+          tasklistId,
+        });
+        draftState.totalCompletedTask -= completedCount;
+        draftState.totalUncompletedTask -= uncompletedCount;
         break;
 
+      case Type.CLEAR_DATA:
+        for (let key in listToTaskMap) {
+          delete listToTaskMap[key];
+        }
+        draftState.totalCompletedTask = 0;
+        draftState.totalUncompletedTask = 0;
+        break;
       default:
     }
   });

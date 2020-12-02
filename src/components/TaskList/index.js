@@ -3,11 +3,13 @@ import {connect} from 'react-redux';
 import {Button, Text, View, TextInput} from 'react-native';
 import {FlatList, Swipeable} from 'react-native-gesture-handler';
 import CheckBox from '@react-native-community/checkbox';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styles from './style';
 import {createTask, updateTask, deleteTask} from '../../actions/TaskOps';
 import {MODAL_MESSAGES} from '../../constants/modalMessages';
 import AskForConformationModal from '../AskForConformationModal';
+import {COLORS} from '../../constants/colors';
 
 const TaskList = (props) => {
   const {
@@ -49,6 +51,31 @@ const TaskList = (props) => {
 
   const renderTaskElement = (data) => {
     const {title, taskId, completed} = data;
+
+    const statusHandler = (e) => {
+      const dispatchData = {
+        tasklistId,
+        taskId,
+        updates: {
+          completed: e,
+        },
+        tasklist,
+      };
+      dispatchUpdateTask(dispatchData);
+    };
+
+    const titleEditHandler = (e) => {
+      const dispatchData = {
+        tasklist,
+        tasklistId,
+        taskId,
+        updates: {
+          title: e,
+        },
+      };
+      dispatchUpdateTask(dispatchData);
+    };
+
     return (
       <Swipeable renderRightActions={() => rightAction({tasklistId, taskId})}>
         <View style={styles.taskElementContainer}>
@@ -59,20 +86,22 @@ const TaskList = (props) => {
               value={completed}
               boxType={'square'}
               style={styles.checkBoxStyle}
-              onValueChange={(e) => {
-                dispatchUpdateTask({tasklistId, taskId, completed: e});
-              }}
+              onValueChange={statusHandler}
             />
           </View>
           <TextInput
             style={styles.taskTitle}
             placeholder={'Task Name'}
-            onChangeText={(e) => {
-              dispatchUpdateTask({tasklistId, taskId, title: e, completed});
-            }}
+            onChangeText={titleEditHandler}
             autoFocus>
             {title}
           </TextInput>
+          <MaterialCommunityIcons
+            name="drag-vertical-variant"
+            color={COLORS.BLACK}
+            size={30}
+            style={styles.draggableIcon}
+          />
         </View>
       </Swipeable>
     );
@@ -80,7 +109,12 @@ const TaskList = (props) => {
 
   const onSubmitAction = () => {
     const {tasklistId: tlId, taskId} = modalOpenerDetails;
-    dispatchDeleteTask({taskId, tasklistId: tlId});
+    const dispatchData = {
+      taskId,
+      tasklistId: tlId,
+      tasklist,
+    };
+    dispatchDeleteTask(dispatchData);
   };
 
   return (

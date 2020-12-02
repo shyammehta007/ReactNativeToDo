@@ -3,12 +3,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import HomeStackScreen from '../HomeStackScreen';
-import Settings from '../Settings';
+import Settings from '../Details';
 import {COLORS} from '../../constants/colors';
 
 const Tab = createBottomTabNavigator();
 
-const MainTabNavigator = () => {
+const MainTabNavigator = (props) => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -16,7 +16,7 @@ const MainTabNavigator = () => {
           let iconName;
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Settings') {
+          } else if (route.name === 'Details') {
             iconName = focused ? 'list' : 'ios-list';
           }
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -29,8 +29,8 @@ const MainTabNavigator = () => {
           fontSize: 20,
         },
       }}>
-      <Tab.Screen name="Home" component={HomeStackScreen} />
-      <Tab.Screen name="Settings" component={Settings} />
+      <Tab.Screen name="Home" component={HomeStackScreen} {...props} />
+      <Tab.Screen name="Details" component={Settings} />
     </Tab.Navigator>
   );
 };

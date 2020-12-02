@@ -9,10 +9,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingRight: 10,
   },
   tasklistTitle: {
     color: COLORS.WHITE,
     fontSize: 20,
+    marginLeft: 15,
   },
   taskElementContainer: {
     flexDirection: 'row',
@@ -43,6 +45,9 @@ const styles = StyleSheet.create({
   },
   seperatorStyle: {
     height: 0.5,
+  },
+  draggableIcon: {
+    paddingLeft: 20,
   },
 });
 

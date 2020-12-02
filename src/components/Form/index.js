@@ -14,20 +14,28 @@ const Form = (props) => {
   }, [register]); /* eslint-disable-line react-hooks/exhaustive-deps*/
   return (
     <View style={styles.formContainer}>
-      {data.map(({name, label}) => {
+      {data.map(({name, label, isRequired = false}) => {
         return (
-          <View key={name}>
+          <View key={name} style={styles.fieldContainer}>
             <Text style={styles.fieldLabel}>{label}</Text>
             <TextInput
               placeholder={name}
               style={styles.feildInput}
-              onChangeText={(text) => setValue(name, text)}
+              onChangeText={(text) => {
+                setValue(name, text);
+              }}
             />
           </View>
         );
       })}
       <View style={styles.submitButton}>
-        <Button title="Submit" color="white" onPress={handleSubmit(onSubmit)} />
+        <Button
+          title="Submit"
+          color="white"
+          onPress={(dat) => {
+            handleSubmit(onSubmit)(dat);
+          }}
+        />
       </View>
     </View>
   );

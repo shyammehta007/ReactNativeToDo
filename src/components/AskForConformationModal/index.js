@@ -3,14 +3,16 @@ import {View, Text, Button} from 'react-native';
 import Modal from 'react-native-modal';
 import styles from './styles';
 
-const AskForConformationModal = ({
-  messageHeading = 'Title to the Modal',
-  onSubmitAction = () => {},
-  onCancelAction = () => {},
-  toggleModal = () => {},
-  isOpen = false,
-  typeOfModal = 'DELETE',
-}) => {
+const AskForConformationModal = (props) => {
+  const {
+    messageHeading = 'Title to the Modal',
+    onSubmitAction = () => {},
+    onCancelAction = () => {},
+    toggleModal = () => {},
+    isOpen = false,
+    typeOfModal = 'DELETE',
+  } = props;
+
   const cancelActionHandler = () => {
     toggleModal((prevState) => !prevState);
     onCancelAction();

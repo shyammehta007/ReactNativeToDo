@@ -9,6 +9,8 @@ import {
   FlatList,
 } from 'react-native';
 import {Swipeable} from 'react-native-gesture-handler';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styles from './style';
 import {
@@ -18,6 +20,7 @@ import {
 } from '../../actions/TaskListOps';
 import {MODAL_MESSAGES} from '../../constants/modalMessages';
 import AskForConformationModal from '../AskForConformationModal';
+import {COLORS} from '../../constants/colors';
 
 const ListOfTaskLists = (props) => {
   const {
@@ -31,7 +34,7 @@ const ListOfTaskLists = (props) => {
   const [isModalOpen, toggleModal] = useState(false);
   const [modalOpenerDetails, setModalDetails] = useState({});
 
-  const rightAction = (prop) => {
+  const leftAction = (prop) => {
     return (
       <View style={styles.deletedStyle}>
         <Button
@@ -51,8 +54,13 @@ const ListOfTaskLists = (props) => {
   const renderListElement = (data) => {
     const {tasklistId, title} = data;
     return (
-      <Swipeable renderRightActions={() => rightAction({tasklistId})}>
+      <Swipeable renderLeftActions={() => leftAction({tasklistId})}>
         <View style={styles.listElementContainer}>
+          <MaterialCommunityIcons
+            name="drag-vertical-variant"
+            color={COLORS.BLACK}
+            size={30}
+          />
           <TextInput
             style={styles.listElementTitle}
             onChangeText={(e) => {
@@ -65,7 +73,8 @@ const ListOfTaskLists = (props) => {
             onPress={() => {
               navigation.navigate('Details', {id: tasklistId});
             }}>
-            <Text style={styles.detailsViewRedirection}>{'->'}</Text>
+            {/* <Text style={styles.detailsViewRedirection}>{'->'}</Text> */}
+            <Ionicons name="md-send" color={COLORS.BLACK} size={20} />
           </TouchableWithoutFeedback>
         </View>
       </Swipeable>
@@ -74,7 +83,12 @@ const ListOfTaskLists = (props) => {
 
   const onSubmitHandler = () => {
     const {tasklistId: tlId} = modalOpenerDetails;
-    dispatchDeleteTasklist({tasklistId: tlId});
+    const payload = {
+      details: {tasklistId: tlId},
+      tasklistArray: listOfTasklistArray,
+    };
+    console.log(payload, 'submit handler');
+    dispatchDeleteTasklist(payload);
   };
 
   return (

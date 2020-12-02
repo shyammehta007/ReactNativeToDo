@@ -11,13 +11,22 @@ Remove Warnings /
 reducer immer   /
 Remove hard coded data and create constants /
 
-On delete modal 
+On delete modal /
 spacing/
 destructuring the props/
 color constants/
 remove duplicate code/
-reducer state update method
+reducer state update method /
 lodash usecase and why do we use?/
 ESLint rules/
-Set absolute path
 
+Auto login  /
+Drawer icon /
+logout icon /
+Drawer profile /
+Keyboard popup on adding tasklist /
+padding on title /
+Styling on UI /
+
+Set absolute path
+Task edit new way
