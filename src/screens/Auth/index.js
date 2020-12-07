@@ -3,11 +3,11 @@ import {connect} from 'react-redux';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
-import SignUpPage from '../../components/SignUpPage';
-import SignInPage from '../../components/SignInPage';
+import SignInPage from '../SignInPage';
+import SignUpPage from '../SignUpPage';
 import MainTabNavigator from '../MainTabNavigator';
 import Loader from '../Loader';
-import {COLORS} from '../../constants/colors';
+import {COLORS} from '../../styleAssets/colors';
 import {tokenStorageChecking} from '../../actions/AuthenticationOps';
 import DrawerContent from '../../components/DrawerContent';
 

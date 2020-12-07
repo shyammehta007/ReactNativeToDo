@@ -1,4 +1,4 @@
-import {COLORS} from './colors';
+import {COLORS} from '../styleAssets/colors';
 
 export const TASK_PROGRESS_MESSAGE = {
   ALL_TASK_COMPLETED: {

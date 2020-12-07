@@ -20,7 +20,8 @@ import {
 } from '../../actions/TaskListOps';
 import {MODAL_MESSAGES} from '../../constants/modalMessages';
 import AskForConformationModal from '../AskForConformationModal';
-import {COLORS} from '../../constants/colors';
+import {COLORS} from '../../styleAssets/colors';
+import PopUpMessages from '../PopUpMessage';
 
 const ListOfTaskLists = (props) => {
   const {
@@ -33,17 +34,20 @@ const ListOfTaskLists = (props) => {
 
   const [isModalOpen, toggleModal] = useState(false);
   const [modalOpenerDetails, setModalDetails] = useState({});
+  const [isTasklistEmpty, setTasklistEmpty] = useState(false);
+  const [showPopupModal, setPopupState] = useState(false);
 
   const leftAction = (prop) => {
+    const onPressHandler = () => {
+      toggleModal(true);
+      setModalDetails(prop);
+    };
     return (
       <View style={styles.deletedStyle}>
         <Button
-          color="white"
+          color={COLORS.WHITE}
           title="DELETE"
-          onPress={() => {
-            toggleModal(true);
-            setModalDetails(prop);
-          }}
+          onPress={onPressHandler}
           style={styles.deletedStyle}>
           Deleted
         </Button>
@@ -53,6 +57,32 @@ const ListOfTaskLists = (props) => {
 
   const renderListElement = (data) => {
     const {tasklistId, title} = data;
+
+    const onTitleEditHandler = (e) => {
+      if (!e) {
+        setTasklistEmpty(true);
+      } else {
+        dispatchUpdateTasklist({tasklistId, title: e});
+        setTasklistEmpty(false);
+      }
+    };
+
+    const elementFocusHandler = (e) => {
+      const {
+        nativeEvent: {text},
+      } = e;
+      if (!text) {
+        setTasklistEmpty(true);
+      }
+    };
+
+    const forwardPressHandler = () => {
+      if (!title) {
+        setPopupState(true);
+      } else {
+        navigation.navigate('Tasklist', {id: tasklistId});
+      }
+    };
     return (
       <Swipeable renderLeftActions={() => leftAction({tasklistId})}>
         <View style={styles.listElementContainer}>
@@ -63,17 +93,12 @@ const ListOfTaskLists = (props) => {
           />
           <TextInput
             style={styles.listElementTitle}
-            onChangeText={(e) => {
-              dispatchUpdateTasklist({tasklistId, title: e});
-            }}
+            onChangeText={onTitleEditHandler}
+            onFocus={elementFocusHandler}
             autoFocus>
             {title}
           </TextInput>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              navigation.navigate('Details', {id: tasklistId});
-            }}>
-            {/* <Text style={styles.detailsViewRedirection}>{'->'}</Text> */}
+          <TouchableWithoutFeedback onPress={forwardPressHandler}>
             <Ionicons name="md-send" color={COLORS.BLACK} size={20} />
           </TouchableWithoutFeedback>
         </View>
@@ -83,24 +108,32 @@ const ListOfTaskLists = (props) => {
 
   const onSubmitHandler = () => {
     const {tasklistId: tlId} = modalOpenerDetails;
+
     const payload = {
       details: {tasklistId: tlId},
       tasklistArray: listOfTasklistArray,
     };
-    console.log(payload, 'submit handler');
+    if (listOfTasklistArray.length === 1) {
+      setTasklistEmpty(false);
+    }
     dispatchDeleteTasklist(payload);
   };
 
+  const addTasklistHandler = () => {
+    if (isTasklistEmpty) {
+      setPopupState(true);
+    } else {
+      dispatchCreateTasklist();
+    }
+  };
   return (
     <View>
       <View style={styles.homeHeader}>
         <Text style={styles.headerText}> List of Tasklist </Text>
         <Button
           title={'+'}
-          color={'aqua'}
-          onPress={() => {
-            dispatchCreateTasklist();
-          }}
+          color={COLORS.LIGHTBLUE}
+          onPress={addTasklistHandler}
         />
       </View>
       <FlatList
@@ -109,6 +142,13 @@ const ListOfTaskLists = (props) => {
         ItemSeparatorComponent={() => <View style={styles.seperatorStyle} />}
         renderItem={({item}) => renderListElement(item)}
       />
+      {showPopupModal && (
+        <PopUpMessages
+          isOpen={showPopupModal}
+          message={MODAL_MESSAGES.TASKLIST_TITLE_REQUIRED}
+          toggleModal={setPopupState}
+        />
+      )}
       {isModalOpen && (
         <AskForConformationModal
           messageHeading={MODAL_MESSAGES.TASKLIST_DELETE_MESSAGE}

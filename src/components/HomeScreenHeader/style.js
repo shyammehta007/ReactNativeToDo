@@ -5,18 +5,19 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
   },
   drawerIcon: {
-    width: 50,
+    width: '10%',
   },
   headerText: {
-    width: 100,
+    width: '80%',
     textAlign: 'center',
     fontSize: 22,
+    paddingRight: 20,
   },
   logoutIcon: {
-    width: 50,
+    width: '10%',
   },
 });
 

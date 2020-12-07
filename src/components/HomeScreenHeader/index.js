@@ -5,9 +5,15 @@ import {connect} from 'react-redux';
 
 import styles from './style';
 import {logOut, clearStore} from '../../actions/AuthenticationOps';
+import {COLORS} from '../../styleAssets/colors';
 
 const HomeScreenHeader = (props) => {
-  const {navigation, dispatchLogOut, dispatchClearStore} = props;
+  const {
+    navigation,
+    dispatchLogOut,
+    dispatchClearStore,
+    title = 'Home',
+  } = props;
 
   const logOutHandler = () => {
     dispatchClearStore();
@@ -22,11 +28,11 @@ const HomeScreenHeader = (props) => {
         onPress={() => {
           navigation.openDrawer();
         }}>
-        <Ionicons name="list-sharp" size={35} color={'black'} />
+        <Ionicons name="list-sharp" size={35} color={COLORS.BLACK} />
       </TouchableOpacity>
-      <Text style={styles.headerText}>Home </Text>
+      <Text style={styles.headerText}>{title} </Text>
       <TouchableOpacity style={styles.logoutIcon} onPress={logOutHandler}>
-        <Ionicons name="exit" size={35} color={'red'} />
+        <Ionicons name="exit" size={35} color={COLORS.RED} />
       </TouchableOpacity>
     </View>
   );

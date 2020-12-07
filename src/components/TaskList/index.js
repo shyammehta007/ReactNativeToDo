@@ -6,10 +6,16 @@ import CheckBox from '@react-native-community/checkbox';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styles from './style';
-import {createTask, updateTask, deleteTask} from '../../actions/TaskOps';
+import {
+  createTask,
+  updateTask,
+  deleteTask,
+  trimTasklist,
+} from '../../actions/TaskOps';
 import {MODAL_MESSAGES} from '../../constants/modalMessages';
 import AskForConformationModal from '../AskForConformationModal';
-import {COLORS} from '../../constants/colors';
+import {COLORS} from '../../styleAssets/colors';
+import PopUpMessages from '../PopUpMessage';
 
 const TaskList = (props) => {
   const {
@@ -31,12 +37,14 @@ const TaskList = (props) => {
 
   const [isModalOpen, toggleModal] = useState(false);
   const [modalOpenerDetails, setModalDetails] = useState({});
+  const [isTaskEmpty, setTaskEmpty] = useState(false);
+  const [showPopupModal, setPopupState] = useState(false);
 
   const rightAction = (prop) => {
     return (
       <View style={styles.deletedStyle}>
         <Button
-          color="white"
+          color={COLORS.WHITE}
           title="DELETE"
           onPress={() => {
             setModalDetails(prop);
@@ -64,6 +72,14 @@ const TaskList = (props) => {
       dispatchUpdateTask(dispatchData);
     };
 
+    const elementFocusHandler = (e) => {
+      const {
+        nativeEvent: {text},
+      } = e;
+      if (!text) {
+        setTaskEmpty(true);
+      }
+    };
     const titleEditHandler = (e) => {
       const dispatchData = {
         tasklist,
@@ -74,14 +90,21 @@ const TaskList = (props) => {
         },
       };
       dispatchUpdateTask(dispatchData);
+      if (completed) {
+        statusHandler(false);
+      }
+      if (!e) {
+        setTaskEmpty(true);
+        setPopupState(true);
+      } else {
+        setTaskEmpty(false);
+      }
     };
-
     return (
       <Swipeable renderRightActions={() => rightAction({tasklistId, taskId})}>
         <View style={styles.taskElementContainer}>
           <View style={styles.checkBoxContainer}>
             <CheckBox
-              // value={true}
               disabled={false}
               value={completed}
               boxType={'square'}
@@ -90,10 +113,11 @@ const TaskList = (props) => {
             />
           </View>
           <TextInput
-            style={styles.taskTitle}
+            style={[styles.taskTitle, completed && styles.crossStyle]}
             placeholder={'Task Name'}
             onChangeText={titleEditHandler}
-            autoFocus>
+            autoFocus
+            onFocus={elementFocusHandler}>
             {title}
           </TextInput>
           <MaterialCommunityIcons
@@ -107,6 +131,13 @@ const TaskList = (props) => {
     );
   };
 
+  const createTaskHandler = () => {
+    if (isTaskEmpty) {
+      setPopupState(true);
+    } else {
+      dispatchCreateTask({tasklistId});
+    }
+  };
   const onSubmitAction = () => {
     const {tasklistId: tlId, taskId} = modalOpenerDetails;
     const dispatchData = {
@@ -114,6 +145,9 @@ const TaskList = (props) => {
       tasklistId: tlId,
       tasklist,
     };
+    if (tasklist.length === 1) {
+      setTaskEmpty(true);
+    }
     dispatchDeleteTask(dispatchData);
   };
 
@@ -123,10 +157,8 @@ const TaskList = (props) => {
         <Text style={styles.tasklistTitle}> {tasklistTitle} </Text>
         <Button
           title="Add Task"
-          onPress={() => {
-            dispatchCreateTask({tasklistId});
-          }}
-          color={'lightgreen'}
+          onPress={createTaskHandler}
+          color={COLORS.LIGHTGREEN}
         />
       </View>
       <FlatList
@@ -135,6 +167,13 @@ const TaskList = (props) => {
         renderItem={({item}) => renderTaskElement(item)}
         ItemSeparatorComponent={() => <View style={styles.seperatorStyle} />}
       />
+      {showPopupModal && (
+        <PopUpMessages
+          isOpen={isTaskEmpty}
+          message={MODAL_MESSAGES.TASK_TITLE_EMPTY}
+          toggleModal={setPopupState}
+        />
+      )}
       {isModalOpen && (
         <AskForConformationModal
           messageHeading={MODAL_MESSAGES.TASK_DELETE_MESSAGE}
@@ -162,6 +201,7 @@ const mapStateToDispatch = (dispatch) => {
     dispatchCreateTask: (details) => dispatch(createTask(details)),
     dispatchUpdateTask: (details) => dispatch(updateTask(details)),
     dispatchDeleteTask: (details) => dispatch(deleteTask(details)),
+    dispatchTrimTask: (details) => dispatch(trimTasklist(details)),
   };
 };
 

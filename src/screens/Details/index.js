@@ -6,17 +6,17 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import styles from './styles';
 import {logOut} from '../../actions/AuthenticationOps';
-import {COLORS} from '../../constants/colors';
+import {COLORS} from '../../styleAssets/colors';
 import {TASK_PROGRESS_MESSAGE} from '../../constants/taskProgressMessages';
+import HomeScreenHeader from '../../components/HomeScreenHeader';
 
-const Settings = (props) => {
+const Details = (props) => {
   const {
     userName,
     taskListCount,
     totalUncompletedTask,
     totalCompletedTask,
   } = props;
-
   const taskStatusType =
     totalUncompletedTask === 0
       ? TASK_PROGRESS_MESSAGE.ALL_TASK_COMPLETED
@@ -27,6 +27,7 @@ const Settings = (props) => {
   const {message, logoName, color} = taskStatusType;
   return (
     <SafeAreaView>
+      <HomeScreenHeader {...props} title={'Details'} />
       <View style={[styles.profileContainer, styles.shadowStyle]}>
         <MaterialCommunityIcons
           name="account-circle"
@@ -71,4 +72,4 @@ const mapStateToProps = (state) => {
     totalUncompletedTask,
   };
 };
-export default connect(mapStateToProps, {dispatchLogOut: logOut})(Settings);
+export default connect(mapStateToProps, {dispatchLogOut: logOut})(Details);

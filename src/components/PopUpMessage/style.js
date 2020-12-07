@@ -18,28 +18,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '90%',
   },
-  headerContainer: {
-    textAlign: 'center',
-    textAlignVertical: 'center',
-  },
-  header: {
-    fontSize: 20,
-    fontWeight: '400',
-    padding: 10,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-  },
-  buttonStyle: {
-    width: '40%',
-    textAlign: 'center',
-    shadowOffset: {width: 3, height: 3},
-    shadowColor: COLORS.GREY,
-    shadowOpacity: 0.8,
-    borderWidth: 1,
-    borderColor: COLORS.DARKSTATEGREY,
-    margin: 5,
-  },
 });
 
 export default styles;

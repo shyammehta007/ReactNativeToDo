@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-import {COLORS} from '../../constants/colors';
+import {COLORS} from '../../styleAssets/colors';
 
 const styles = StyleSheet.create({
   titleContainer: {
@@ -48,6 +48,10 @@ const styles = StyleSheet.create({
   },
   draggableIcon: {
     paddingLeft: 20,
+  },
+  crossStyle: {
+    textDecorationLine: 'line-through',
+    textDecorationColor: COLORS.BLACK,
   },
 });
 

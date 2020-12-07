@@ -8,7 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './style';
 import {Drawer} from 'react-native-paper';
 import {logOut} from '../../actions/AuthenticationOps';
-import {COLORS} from '../../constants/colors';
+import {COLORS} from '../../styleAssets/colors';
 
 const DrawerContent = (props) => {
   const {userName, navigation, dispatchLogOut} = props;
@@ -17,7 +17,7 @@ const DrawerContent = (props) => {
       <DrawerContentScrollView {...props}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Settings');
+            navigation.navigate('Details');
           }}>
           <View style={styles.profileContainer}>
             <MaterialCommunityIcons

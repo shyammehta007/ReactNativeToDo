@@ -15,6 +15,7 @@ const listToTaskReducer = (state = initialState, action) =>
     const {type, payload = {}} = action;
     const {
       tasklistId,
+      updatedTasklist,
       updatedTaskIndex,
       deletedTaskIndex,
       updatedTitle,
@@ -44,6 +45,10 @@ const listToTaskReducer = (state = initialState, action) =>
         deleteTargetlist.splice(deletedTaskIndex, 1);
         draftState.totalCompletedTask += completedCountUpdate;
         draftState.totalUncompletedTask += uncompletedCountUpdate;
+        break;
+
+      case Type.TRIM_TASKLIST:
+        draftState.listToTaskMap[tasklistId] = updatedTasklist;
         break;
 
       case Type.TASKLIST_DELETE:

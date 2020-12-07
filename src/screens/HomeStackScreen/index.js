@@ -7,17 +7,17 @@ import HomeScreenHeader from '../../components/HomeScreenHeader';
 
 const HomeStack = createStackNavigator();
 
-const HomeStackScreen = (prop) => {
+const HomeStackScreen = (props) => {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen
         name="Home"
         component={ListOfTaskLists}
         options={{
-          headerTitle: (props) => <HomeScreenHeader {...props} {...prop} />,
+          headerTitle: () => <HomeScreenHeader {...props} />,
         }}
       />
-      <HomeStack.Screen name="Details" component={TaskList} />
+      <HomeStack.Screen name="Tasklist" component={TaskList} />
     </HomeStack.Navigator>
   );
 };

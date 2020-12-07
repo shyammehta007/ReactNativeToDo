@@ -1,7 +1,9 @@
 import React from 'react';
 import {View, Text, Button} from 'react-native';
 import Modal from 'react-native-modal';
+
 import styles from './styles';
+import {COLORS} from '../../styleAssets/colors';
 
 const AskForConformationModal = (props) => {
   const {
@@ -34,14 +36,14 @@ const AskForConformationModal = (props) => {
             <Button
               title="Cancel"
               onPress={cancelActionHandler}
-              color="black"
+              color={COLORS.BLACK}
             />
           </View>
           <View style={styles.buttonStyle}>
             <Button
               title={typeOfModal}
               onPress={onSubmitActionHandler}
-              color="red"
+              color={COLORS.RED}
             />
           </View>
         </View>

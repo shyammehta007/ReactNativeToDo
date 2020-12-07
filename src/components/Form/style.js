@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-import {COLORS} from '../../constants/colors';
+import {COLORS} from '../../styleAssets/colors';
 
 const styles = StyleSheet.create({
   formContainer: {

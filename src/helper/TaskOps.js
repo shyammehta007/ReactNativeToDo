@@ -31,7 +31,6 @@ export const updatedTaskDetails = (data) => {
   const updatedTaskIndex = tasklist.findIndex((task) => task.taskId === taskId);
   const task = tasklist[updatedTaskIndex];
   const {completed, title} = updates;
-  console.log(completed, title);
   if (title !== undefined) {
     return {
       updatedTaskIndex,
@@ -79,4 +78,10 @@ export const deletedTaskDetails = (data) => {
       uncompletedCountUpdate: -1,
     };
   }
+};
+
+export const tasklistTrimmer = (data) => {
+  const {tasklist} = data;
+  const updatedTasklist = tasklist.filter((task) => !(task.title === ''));
+  return updatedTasklist;
 };

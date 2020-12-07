@@ -6,6 +6,7 @@ export const AUTHDATA = [
   {
     name: 'Password',
     label: 'Password',
+    secureTextEntry: true,
   },
 ];
 

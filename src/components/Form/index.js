@@ -3,6 +3,7 @@ import {View, Button, Text, TextInput} from 'react-native';
 import {useForm} from 'react-hook-form';
 
 import styles from './style';
+import {COLORS} from '../../styleAssets/colors';
 
 const Form = (props) => {
   const {register, handleSubmit, setValue} = useForm();
@@ -14,7 +15,7 @@ const Form = (props) => {
   }, [register]); /* eslint-disable-line react-hooks/exhaustive-deps*/
   return (
     <View style={styles.formContainer}>
-      {data.map(({name, label, isRequired = false}) => {
+      {data.map(({name, label, secureTextEntry = false}) => {
         return (
           <View key={name} style={styles.fieldContainer}>
             <Text style={styles.fieldLabel}>{label}</Text>
@@ -24,6 +25,7 @@ const Form = (props) => {
               onChangeText={(text) => {
                 setValue(name, text);
               }}
+              secureTextEntry={secureTextEntry}
             />
           </View>
         );
@@ -31,10 +33,8 @@ const Form = (props) => {
       <View style={styles.submitButton}>
         <Button
           title="Submit"
-          color="white"
-          onPress={(dat) => {
-            handleSubmit(onSubmit)(dat);
-          }}
+          color={COLORS.WHITE}
+          onPress={handleSubmit(onSubmit)}
         />
       </View>
     </View>

@@ -3,14 +3,19 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import HomeStackScreen from '../HomeStackScreen';
-import Settings from '../Details';
-import {COLORS} from '../../constants/colors';
+import Details from '../Details';
+import {COLORS} from '../../styleAssets/colors';
 
 const Tab = createBottomTabNavigator();
 
 const MainTabNavigator = (props) => {
   return (
     <Tab.Navigator
+      navigationOptions={{
+        header: {
+          visible: true,
+        },
+      }}
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
@@ -30,7 +35,7 @@ const MainTabNavigator = (props) => {
         },
       }}>
       <Tab.Screen name="Home" component={HomeStackScreen} {...props} />
-      <Tab.Screen name="Details" component={Settings} />
+      <Tab.Screen name="Details" component={Details} options={{}} />
     </Tab.Navigator>
   );
 };

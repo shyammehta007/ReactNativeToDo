@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-import {COLORS} from '../../constants/colors';
+import {COLORS} from '../../styleAssets/colors';
 
 const styles = StyleSheet.create({
   profileContainer: {
@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLORS.LIGHTBLACK,
     margin: 2,
+    marginTop: 10,
     shadowColor: COLORS.WHITE,
     borderRadius: 15,
   },
