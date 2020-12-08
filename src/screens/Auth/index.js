@@ -18,11 +18,10 @@ const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 const Auth = (props) => {
-  const {userToken, isLoading, checkForToken, dispatchToggleLoading} = props;
-
+  const {userToken, isLoading, checkForToken} = props;
   useEffect(() => {
     checkForToken();
-  }, [checkForToken]);
+  }, []);
 
   if (isLoading) {
     return <Loader />;

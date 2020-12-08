@@ -49,6 +49,7 @@ use of lodash in here /
 in stack screen task name change /
 reading about how to redirect directly : https://reactnative.dev/docs/appstate /
 Inline function declaration /
+showing loader instead of login screen on restarting the app with stored token/
 
 class and memo usecase
 roles and permission in navigation

@@ -62,6 +62,7 @@ export const tokenStorageChecking = () => async (dispatch) => {
       userName,
     },
   });
+  dispatch(toggleLoading());
 };
 
 export const logOut = () => async (dispatch) => {

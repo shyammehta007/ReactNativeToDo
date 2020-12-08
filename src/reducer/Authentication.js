@@ -5,7 +5,7 @@ import TYPE from '../actions/types';
 const initialState = {
   userToken: null,
   userName: '',
-  isLoading: false,
+  isLoading: true,
   isSignedOut: true,
 };
 
