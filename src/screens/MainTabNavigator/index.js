@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import HomeStackScreen from '../HomeStackScreen';
 import Details from '../Details';
-import {COLORS} from '../../styleAssets/colors';
+import {COLORS} from '../../styles/colors';
 
 const Tab = createBottomTabNavigator();
 

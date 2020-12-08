@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {Button, Text, View, TextInput} from 'react-native';
+import {Button, Text, View, TextInput, TouchableOpacity} from 'react-native';
 import {FlatList, Swipeable} from 'react-native-gesture-handler';
 import CheckBox from '@react-native-community/checkbox';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import _ from 'lodash';
 
 import styles from './style';
 import {
@@ -14,7 +15,7 @@ import {
 } from '../../actions/TaskOps';
 import {MODAL_MESSAGES} from '../../constants/modalMessages';
 import AskForConformationModal from '../AskForConformationModal';
-import {COLORS} from '../../styleAssets/colors';
+import {COLORS} from '../../styles/colors';
 import PopUpMessages from '../PopUpMessage';
 
 const TaskList = (props) => {
@@ -25,6 +26,7 @@ const TaskList = (props) => {
     dispatchUpdateTask,
     listOfTasklistArray,
     listToTaskMap,
+    navigation,
   } = props;
 
   const {id: tasklistId} = route.params;
@@ -33,12 +35,16 @@ const TaskList = (props) => {
       (tasklist) => tasklist.tasklistId === tasklistId,
     ) || {};
   const {title: tasklistTitle} = tasklistHeading;
-  const tasklist = listToTaskMap[tasklistId] || [];
+  const tasklist = _.get(listToTaskMap, tasklistId, []);
 
   const [isModalOpen, toggleModal] = useState(false);
   const [modalOpenerDetails, setModalDetails] = useState({});
   const [isTaskEmpty, setTaskEmpty] = useState(false);
   const [showPopupModal, setPopupState] = useState(false);
+
+  useEffect(() => {
+    navigation.setOptions({title: tasklistTitle});
+  }, []);
 
   const rightAction = (prop) => {
     return (
@@ -101,8 +107,13 @@ const TaskList = (props) => {
       }
     };
     return (
-      <Swipeable renderRightActions={() => rightAction({tasklistId, taskId})}>
+      <Swipeable renderLeftActions={() => rightAction({tasklistId, taskId})}>
         <View style={styles.taskElementContainer}>
+          <MaterialCommunityIcons
+            name="drag-vertical-variant"
+            color={COLORS.BLACK}
+            size={30}
+          />
           <View style={styles.checkBoxContainer}>
             <CheckBox
               disabled={false}
@@ -120,12 +131,6 @@ const TaskList = (props) => {
             onFocus={elementFocusHandler}>
             {title}
           </TextInput>
-          <MaterialCommunityIcons
-            name="drag-vertical-variant"
-            color={COLORS.BLACK}
-            size={30}
-            style={styles.draggableIcon}
-          />
         </View>
       </Swipeable>
     );
@@ -146,50 +151,49 @@ const TaskList = (props) => {
       tasklist,
     };
     if (tasklist.length === 1) {
-      setTaskEmpty(true);
+      setTaskEmpty(false);
     }
     dispatchDeleteTask(dispatchData);
   };
 
   return (
     <>
-      <View style={styles.titleContainer}>
-        <Text style={styles.tasklistTitle}> {tasklistTitle} </Text>
-        <Button
-          title="Add Task"
-          onPress={createTaskHandler}
-          color={COLORS.LIGHTGREEN}
-        />
-      </View>
+      <TouchableOpacity
+        onPress={createTaskHandler}
+        style={styles.titleContainer}>
+        <Text style={styles.addTaskTextStyle}>ADD TASK</Text>
+      </TouchableOpacity>
       <FlatList
         data={tasklist}
         keyExtractor={(item) => item.taskId}
         renderItem={({item}) => renderTaskElement(item)}
         ItemSeparatorComponent={() => <View style={styles.seperatorStyle} />}
       />
-      {showPopupModal && (
+      {
         <PopUpMessages
-          isOpen={isTaskEmpty}
+          isOpen={showPopupModal}
           message={MODAL_MESSAGES.TASK_TITLE_EMPTY}
           toggleModal={setPopupState}
         />
-      )}
-      {isModalOpen && (
+      }
+      {
         <AskForConformationModal
           messageHeading={MODAL_MESSAGES.TASK_DELETE_MESSAGE}
           onSubmitAction={onSubmitAction}
           toggleModal={toggleModal}
           isOpen={isModalOpen}
         />
-      )}
+      }
     </>
   );
 };
 const mapStateToProps = (state) => {
-  const {
-    listOfTasklistContainer: {listOfTasklistArray = []},
-    listToTaskContainer: {listToTaskMap = []},
-  } = state;
+  const listOfTasklistArray = _.get(
+    state,
+    'listOfTasklistContainer.listOfTasklistArray',
+    [],
+  );
+  const listToTaskMap = _.get(state, 'listToTaskContainer.listToTaskMap', []);
   return {
     listOfTasklistArray,
     listToTaskMap,

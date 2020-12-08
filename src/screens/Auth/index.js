@@ -7,7 +7,7 @@ import SignInPage from '../SignInPage';
 import SignUpPage from '../SignUpPage';
 import MainTabNavigator from '../MainTabNavigator';
 import Loader from '../Loader';
-import {COLORS} from '../../styleAssets/colors';
+import {COLORS} from '../../styles/colors';
 import {tokenStorageChecking} from '../../actions/AuthenticationOps';
 import DrawerContent from '../../components/DrawerContent';
 
@@ -56,6 +56,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, {
+const mapStateToDispatch = {
   checkForToken: tokenStorageChecking,
-})(Auth);
+};
+
+export default connect(mapStateToProps, mapStateToDispatch)(Auth);

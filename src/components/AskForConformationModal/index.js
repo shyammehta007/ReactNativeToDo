@@ -3,7 +3,7 @@ import {View, Text, Button} from 'react-native';
 import Modal from 'react-native-modal';
 
 import styles from './styles';
-import {COLORS} from '../../styleAssets/colors';
+import {COLORS} from '../../styles/colors';
 
 const AskForConformationModal = (props) => {
   const {

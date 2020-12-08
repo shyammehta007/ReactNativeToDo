@@ -2,7 +2,7 @@ import React from 'react';
 import {View, ActivityIndicator} from 'react-native';
 
 import styles from './styles';
-import {COLORS} from '../../styleAssets/colors';
+import {COLORS} from '../../styles/colors';
 
 const Loader = () => {
   return (

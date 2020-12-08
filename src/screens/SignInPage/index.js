@@ -21,10 +21,14 @@ const SignInPage = (props) => {
   };
   return (
     <View style={styles.container}>
-      <Form data={AUTHDATA} onSubmit={onSubmit} />
+      <Form formData={AUTHDATA} onSubmit={onSubmit} />
       <Text style={styles.errorMessage}>{errorMessage}</Text>
     </View>
   );
 };
 
-export default connect(null, {dispatchSignIn: signIn})(SignInPage);
+const mapStateToDispatch = {
+  dispatchSignIn: signIn,
+};
+
+export default connect(null, mapStateToDispatch)(SignInPage);

@@ -4,14 +4,16 @@ import {connect} from 'react-redux';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import _ from 'lodash';
 
 import styles from './style';
 import {Drawer} from 'react-native-paper';
 import {logOut} from '../../actions/AuthenticationOps';
-import {COLORS} from '../../styleAssets/colors';
+import {COLORS} from '../../styles/colors';
 
 const DrawerContent = (props) => {
   const {userName, navigation, dispatchLogOut} = props;
+
   return (
     <View style={styles.drawerContainer}>
       <DrawerContentScrollView {...props}>
@@ -70,9 +72,7 @@ const DrawerContent = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const {
-    Authentication: {userName},
-  } = state;
+  const userName = _.get(state, 'Authentication.userName', '');
   return {
     userName,
   };

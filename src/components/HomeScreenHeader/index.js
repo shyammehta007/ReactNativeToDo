@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 
 import styles from './style';
 import {logOut, clearStore} from '../../actions/AuthenticationOps';
-import {COLORS} from '../../styleAssets/colors';
+import {COLORS} from '../../styles/colors';
 
 const HomeScreenHeader = (props) => {
   const {
@@ -38,7 +38,9 @@ const HomeScreenHeader = (props) => {
   );
 };
 
-export default connect(null, {
+const mapStateToDispatch = {
   dispatchLogOut: logOut,
   dispatchClearStore: clearStore,
-})(HomeScreenHeader);
+};
+
+export default connect(null, mapStateToDispatch)(HomeScreenHeader);

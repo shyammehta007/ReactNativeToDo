@@ -39,7 +39,16 @@ function currying /
 
 task state change /
 create a style folder and keep colors in that /
-read about selectors /
-navigation code structure correction 
+read about selectors / 
 task status change on edit/
 sign up and sign in screen /
+
+HOC implementation 
+navigation code structure correction
+data nameing /
+use of lodash in here /
+in stack screen task name change /
+reading about how to redirect directly : https://reactnative.dev/docs/appstate
+class and memo usecase
+roles and permission in navigation
+react native debugger tool

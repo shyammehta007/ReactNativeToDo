@@ -3,19 +3,19 @@ import {View, Button, Text, TextInput} from 'react-native';
 import {useForm} from 'react-hook-form';
 
 import styles from './style';
-import {COLORS} from '../../styleAssets/colors';
+import {COLORS} from '../../styles/colors';
 
 const Form = (props) => {
   const {register, handleSubmit, setValue} = useForm();
-  const {data, onSubmit} = props;
+  const {formData = [], onSubmit} = props;
   useEffect(() => {
-    data.map(({name}) => {
+    formData.map(({name}) => {
       register(name);
     });
   }, [register]); /* eslint-disable-line react-hooks/exhaustive-deps*/
   return (
     <View style={styles.formContainer}>
-      {data.map(({name, label, secureTextEntry = false}) => {
+      {formData.map(({name, label, secureTextEntry = false}) => {
         return (
           <View key={name} style={styles.fieldContainer}>
             <Text style={styles.fieldLabel}>{label}</Text>

@@ -11,6 +11,7 @@ import {
 import {Swipeable} from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import _ from 'lodash';
 
 import styles from './style';
 import {
@@ -20,7 +21,7 @@ import {
 } from '../../actions/TaskListOps';
 import {MODAL_MESSAGES} from '../../constants/modalMessages';
 import AskForConformationModal from '../AskForConformationModal';
-import {COLORS} from '../../styleAssets/colors';
+import {COLORS} from '../../styles/colors';
 import PopUpMessages from '../PopUpMessage';
 
 const ListOfTaskLists = (props) => {
@@ -127,7 +128,7 @@ const ListOfTaskLists = (props) => {
     }
   };
   return (
-    <View>
+    <>
       <View style={styles.homeHeader}>
         <Text style={styles.headerText}> List of Tasklist </Text>
         <Button
@@ -142,13 +143,13 @@ const ListOfTaskLists = (props) => {
         ItemSeparatorComponent={() => <View style={styles.seperatorStyle} />}
         renderItem={({item}) => renderListElement(item)}
       />
-      {showPopupModal && (
+      {
         <PopUpMessages
           isOpen={showPopupModal}
           message={MODAL_MESSAGES.TASKLIST_TITLE_REQUIRED}
           toggleModal={setPopupState}
         />
-      )}
+      }
       {isModalOpen && (
         <AskForConformationModal
           messageHeading={MODAL_MESSAGES.TASKLIST_DELETE_MESSAGE}
@@ -157,14 +158,16 @@ const ListOfTaskLists = (props) => {
           toggleModal={toggleModal}
         />
       )}
-    </View>
+    </>
   );
 };
 
 const mapStateToProps = (state) => {
-  const {
-    listOfTasklistContainer: {listOfTasklistArray = []},
-  } = state;
+  const listOfTasklistArray = _.get(
+    state,
+    'listOfTasklistContainer.listOfTasklistArray',
+    [],
+  );
   return {
     listOfTasklistArray,
   };

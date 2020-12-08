@@ -81,7 +81,7 @@ export const deletedTaskDetails = (data) => {
 };
 
 export const tasklistTrimmer = (data) => {
-  const {tasklist} = data;
+  const {tasklist = []} = data;
   const updatedTasklist = tasklist.filter((task) => !(task.title === ''));
   return updatedTasklist;
 };

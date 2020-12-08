@@ -6,7 +6,7 @@ import styles from './styles';
 import Form from '../../components/Form';
 import {signUp} from '../../actions/AuthenticationOps';
 import {AUTHDATA, FORM_MESSAGES} from '../../constants/formData';
-import {COLORS} from '../../styleAssets/colors';
+import {COLORS} from '../../styles/colors';
 
 const SignUpPage = (props) => {
   const {navigation, dispatchSignUp} = props;
@@ -22,7 +22,7 @@ const SignUpPage = (props) => {
 
   return (
     <View style={styles.container}>
-      <Form data={AUTHDATA} onSubmit={onSubmit} />
+      <Form formData={AUTHDATA} onSubmit={onSubmit} />
       <Text style={styles.errorMessage}>{errorMessage}</Text>
       <Button
         color={COLORS.BLUE}
@@ -35,4 +35,8 @@ const SignUpPage = (props) => {
   );
 };
 
-export default connect(null, {dispatchSignUp: signUp})(SignUpPage);
+const mapStateToDispatch = {
+  dispatchSignUp: signUp,
+};
+
+export default connect(null, mapStateToDispatch)(SignUpPage);

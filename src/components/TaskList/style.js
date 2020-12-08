@@ -1,15 +1,18 @@
 import {StyleSheet} from 'react-native';
 
-import {COLORS} from '../../styleAssets/colors';
+import {COLORS} from '../../styles/colors';
 
 const styles = StyleSheet.create({
   titleContainer: {
-    height: 60,
+    height: 40,
     backgroundColor: COLORS.GREY,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingRight: 10,
+  },
+  addTaskTextStyle: {
+    color: COLORS.CHARTREUSE,
+    fontSize: 20,
   },
   tasklistTitle: {
     color: COLORS.WHITE,
@@ -45,9 +48,6 @@ const styles = StyleSheet.create({
   },
   seperatorStyle: {
     height: 0.5,
-  },
-  draggableIcon: {
-    paddingLeft: 20,
   },
   crossStyle: {
     textDecorationLine: 'line-through',

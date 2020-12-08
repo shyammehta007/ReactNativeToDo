@@ -14,6 +14,7 @@ export const COLORS = {
   NAVY: '#000080',
   RED: '#ff0000',
   DARKRED: '#e00d0d',
+  CHARTREUSE: '#7fff00',
   LIGHTGREEN: '#167d1a',
   YELLOWGREEN: '#9acd32',
   YELLOWWHITE: '#fffdd8',

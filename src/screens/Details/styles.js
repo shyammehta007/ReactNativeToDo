@@ -1,15 +1,17 @@
 import {StyleSheet} from 'react-native';
 
-import {COLORS} from '../../styleAssets/colors';
+import {COLORS} from '../../styles/colors';
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    padding: 10,
+  },
   profileContainer: {
     height: 100,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.LIGHTBLACK,
     margin: 2,
-    marginTop: 10,
     shadowColor: COLORS.WHITE,
     borderRadius: 15,
   },
