@@ -13,13 +13,14 @@ const SignUpPage = (props) => {
   const [errorMessage, setError] = useState('');
   const onSubmit = (data) => {
     const {UserName, Password} = data;
-    if (!UserName || !Password) {
-      setError(FORM_MESSAGES.ALL_FIELDS_REQUIRED);
+    if (UserName && Password) {
+      dispatchSignUp(UserName);
       return;
     }
-    dispatchSignUp(UserName);
+    setError(FORM_MESSAGES.ALL_FIELDS_REQUIRED);
   };
 
+  const signInRedirector = () => navigation.navigate('Sign In');
   return (
     <View style={styles.container}>
       <Form formData={AUTHDATA} onSubmit={onSubmit} />
@@ -27,9 +28,7 @@ const SignUpPage = (props) => {
       <Button
         color={COLORS.BLUE}
         title="Already a User?"
-        onPress={() => {
-          navigation.navigate('Sign In');
-        }}
+        onPress={signInRedirector}
       />
     </View>
   );

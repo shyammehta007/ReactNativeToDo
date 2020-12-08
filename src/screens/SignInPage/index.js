@@ -12,12 +12,12 @@ const SignInPage = (props) => {
   const [errorMessage, setError] = useState('');
   const onSubmit = (data) => {
     const {UserName, Password} = data;
-    if (!UserName || !Password) {
-      setError(FORM_MESSAGES.ALL_FIELDS_REQUIRED);
+    if (UserName && Password) {
+      setError('');
+      dispatchSignIn(UserName);
       return;
     }
-    setError('');
-    dispatchSignIn(UserName);
+    setError(FORM_MESSAGES.ALL_FIELDS_REQUIRED);
   };
   return (
     <View style={styles.container}>

@@ -25,9 +25,7 @@ const HomeScreenHeader = (props) => {
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.drawerIcon}
-        onPress={() => {
-          navigation.openDrawer();
-        }}>
+        onPress={navigation.openDrawer}>
         <Ionicons name="list-sharp" size={35} color={COLORS.BLACK} />
       </TouchableOpacity>
       <Text style={styles.headerText}>{title} </Text>

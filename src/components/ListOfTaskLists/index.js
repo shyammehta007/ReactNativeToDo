@@ -60,11 +60,11 @@ const ListOfTaskLists = (props) => {
     const {tasklistId, title} = data;
 
     const onTitleEditHandler = (e) => {
-      if (!e) {
-        setTasklistEmpty(true);
-      } else {
+      if (e) {
         dispatchUpdateTasklist({tasklistId, title: e});
         setTasklistEmpty(false);
+      } else {
+        setTasklistEmpty(true);
       }
     };
 
@@ -72,20 +72,24 @@ const ListOfTaskLists = (props) => {
       const {
         nativeEvent: {text},
       } = e;
-      if (!text) {
-        setTasklistEmpty(true);
+      if (text) {
+        return;
       }
+      setTasklistEmpty(true);
     };
 
     const forwardPressHandler = () => {
-      if (!title) {
-        setPopupState(true);
-      } else {
+      if (title) {
         navigation.navigate('Tasklist', {id: tasklistId});
+      } else {
+        setPopupState(true);
       }
     };
+
+    const leftActionHandler = () => leftAction({tasklistId});
+
     return (
-      <Swipeable renderLeftActions={() => leftAction({tasklistId})}>
+      <Swipeable renderLeftActions={leftActionHandler}>
         <View style={styles.listElementContainer}>
           <MaterialCommunityIcons
             name="drag-vertical-variant"
@@ -127,6 +131,11 @@ const ListOfTaskLists = (props) => {
       dispatchCreateTasklist();
     }
   };
+
+  const flatListSeperator = () => <View style={styles.seperatorStyle} />;
+  const flatListKeyExtractor = (item) => item.tasklistId;
+  const flatListItemRenderer = ({item}) => renderListElement(item);
+
   return (
     <>
       <View style={styles.homeHeader}>
@@ -139,25 +148,21 @@ const ListOfTaskLists = (props) => {
       </View>
       <FlatList
         data={listOfTasklistArray}
-        keyExtractor={(item) => item.tasklistId}
-        ItemSeparatorComponent={() => <View style={styles.seperatorStyle} />}
-        renderItem={({item}) => renderListElement(item)}
+        keyExtractor={flatListKeyExtractor}
+        ItemSeparatorComponent={flatListSeperator}
+        renderItem={flatListItemRenderer}
       />
-      {
-        <PopUpMessages
-          isOpen={showPopupModal}
-          message={MODAL_MESSAGES.TASKLIST_TITLE_REQUIRED}
-          toggleModal={setPopupState}
-        />
-      }
-      {isModalOpen && (
-        <AskForConformationModal
-          messageHeading={MODAL_MESSAGES.TASKLIST_DELETE_MESSAGE}
-          onSubmitAction={onSubmitHandler}
-          isOpen={isModalOpen}
-          toggleModal={toggleModal}
-        />
-      )}
+      <PopUpMessages
+        isOpen={showPopupModal}
+        message={MODAL_MESSAGES.TASKLIST_TITLE_REQUIRED}
+        toggleModal={setPopupState}
+      />
+      <AskForConformationModal
+        messageHeading={MODAL_MESSAGES.TASKLIST_DELETE_MESSAGE}
+        onSubmitAction={onSubmitHandler}
+        isOpen={isModalOpen}
+        toggleModal={toggleModal}
+      />
     </>
   );
 };

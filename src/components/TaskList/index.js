@@ -47,15 +47,17 @@ const TaskList = (props) => {
   }, []);
 
   const rightAction = (prop) => {
+    const onDeleteClick = () => {
+      setModalDetails(prop);
+      toggleModal((prevState) => !prevState);
+    };
+
     return (
       <View style={styles.deletedStyle}>
         <Button
           color={COLORS.WHITE}
           title="DELETE"
-          onPress={() => {
-            setModalDetails(prop);
-            toggleModal((prevState) => !prevState);
-          }}
+          onPress={onDeleteClick}
           style={styles.deletedStyle}>
           Deleted
         </Button>
@@ -82,9 +84,10 @@ const TaskList = (props) => {
       const {
         nativeEvent: {text},
       } = e;
-      if (!text) {
-        setTaskEmpty(true);
+      if (text) {
+        return;
       }
+      setTaskEmpty(true);
     };
     const titleEditHandler = (e) => {
       const dispatchData = {
@@ -98,16 +101,20 @@ const TaskList = (props) => {
       dispatchUpdateTask(dispatchData);
       if (completed) {
         statusHandler(false);
+        return;
       }
-      if (!e) {
+      if (e) {
+        setTaskEmpty(false);
+      } else {
         setTaskEmpty(true);
         setPopupState(true);
-      } else {
-        setTaskEmpty(false);
       }
     };
+
+    const rightSwipeHandler = () => rightAction({tasklistId, taskId});
+
     return (
-      <Swipeable renderLeftActions={() => rightAction({tasklistId, taskId})}>
+      <Swipeable renderLeftActions={rightSwipeHandler}>
         <View style={styles.taskElementContainer}>
           <MaterialCommunityIcons
             name="drag-vertical-variant"
@@ -156,6 +163,9 @@ const TaskList = (props) => {
     dispatchDeleteTask(dispatchData);
   };
 
+  const taskFlatlistSeparator = () => <View style={styles.seperatorStyle} />;
+  const taskFlatlistKeyExtractor = (item) => item.taskId;
+  const taskFlatlistItemRenderer = ({item}) => renderTaskElement(item);
   return (
     <>
       <TouchableOpacity
@@ -165,25 +175,21 @@ const TaskList = (props) => {
       </TouchableOpacity>
       <FlatList
         data={tasklist}
-        keyExtractor={(item) => item.taskId}
-        renderItem={({item}) => renderTaskElement(item)}
-        ItemSeparatorComponent={() => <View style={styles.seperatorStyle} />}
+        keyExtractor={taskFlatlistKeyExtractor}
+        renderItem={taskFlatlistItemRenderer}
+        ItemSeparatorComponent={taskFlatlistSeparator}
       />
-      {
-        <PopUpMessages
-          isOpen={showPopupModal}
-          message={MODAL_MESSAGES.TASK_TITLE_EMPTY}
-          toggleModal={setPopupState}
-        />
-      }
-      {
-        <AskForConformationModal
-          messageHeading={MODAL_MESSAGES.TASK_DELETE_MESSAGE}
-          onSubmitAction={onSubmitAction}
-          toggleModal={toggleModal}
-          isOpen={isModalOpen}
-        />
-      }
+      <PopUpMessages
+        isOpen={showPopupModal}
+        message={MODAL_MESSAGES.TASK_TITLE_EMPTY}
+        toggleModal={setPopupState}
+      />
+      <AskForConformationModal
+        messageHeading={MODAL_MESSAGES.TASK_DELETE_MESSAGE}
+        onSubmitAction={onSubmitAction}
+        toggleModal={toggleModal}
+        isOpen={isModalOpen}
+      />
     </>
   );
 };

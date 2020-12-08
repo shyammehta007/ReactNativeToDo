@@ -14,13 +14,29 @@ import {COLORS} from '../../styles/colors';
 const DrawerContent = (props) => {
   const {userName, navigation, dispatchLogOut} = props;
 
+  const profileTouchHandler = () => {
+    navigation.navigate('Details');
+  };
+
+  const homeTouchHandler = () => {
+    navigation.navigate('Home');
+  };
+
+  const homeIconComponent = () => (
+    <Ionicons name="home" color={COLORS.LIGHTGREEN} size={28} />
+  );
+
+  const detailTouchHandler = () => {
+    navigation.navigate('Details');
+  };
+
+  const detailIconComponent = () => (
+    <Ionicons name="settings" color={COLORS.LIGHTGREEN} size={28} />
+  );
   return (
     <View style={styles.drawerContainer}>
       <DrawerContentScrollView {...props}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Details');
-          }}>
+        <TouchableOpacity onPress={profileTouchHandler}>
           <View style={styles.profileContainer}>
             <MaterialCommunityIcons
               name="account-circle"
@@ -38,30 +54,22 @@ const DrawerContent = (props) => {
         <Drawer.Section>
           <DrawerItem
             style={styles.sectionItems}
-            icon={() => (
-              <Ionicons name="home" color={COLORS.LIGHTGREEN} size={28} />
-            )}
+            icon={homeIconComponent}
             labelStyle={styles.itemFontStyle}
             label="Home"
-            onPress={() => {
-              navigation.navigate('Home');
-            }}
+            onPress={homeTouchHandler}
           />
           <DrawerItem
-            icon={() => (
-              <Ionicons name="settings" color={COLORS.LIGHTGREEN} size={28} />
-            )}
+            icon={detailIconComponent}
             labelStyle={styles.itemFontStyle}
             label="Details"
-            onPress={() => {
-              navigation.navigate('Details');
-            }}
+            onPress={detailTouchHandler}
           />
         </Drawer.Section>
       </DrawerContentScrollView>
       <Drawer.Section>
         <TouchableOpacity
-          onPress={() => dispatchLogOut()}
+          onPress={dispatchLogOut}
           style={styles.bottomLogOutButton}>
           <Ionicons name="exit" size={35} color={COLORS.WHITE} />
           <Text style={styles.signOutTextStyle}>Sign Out</Text>

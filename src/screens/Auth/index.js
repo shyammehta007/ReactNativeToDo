@@ -8,14 +8,17 @@ import SignUpPage from '../SignUpPage';
 import MainTabNavigator from '../MainTabNavigator';
 import Loader from '../Loader';
 import {COLORS} from '../../styles/colors';
-import {tokenStorageChecking} from '../../actions/AuthenticationOps';
+import {
+  toggleLoading,
+  tokenStorageChecking,
+} from '../../actions/AuthenticationOps';
 import DrawerContent from '../../components/DrawerContent';
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 const Auth = (props) => {
-  const {userToken, isLoading, checkForToken} = props;
+  const {userToken, isLoading, checkForToken, dispatchToggleLoading} = props;
 
   useEffect(() => {
     checkForToken();
@@ -24,6 +27,7 @@ const Auth = (props) => {
   if (isLoading) {
     return <Loader />;
   }
+
   if (userToken) {
     return (
       <Drawer.Navigator drawerContent={(prop) => <DrawerContent {...prop} />}>
@@ -58,6 +62,7 @@ const mapStateToProps = (state) => {
 
 const mapStateToDispatch = {
   checkForToken: tokenStorageChecking,
+  dispatchToggleLoading: toggleLoading,
 };
 
 export default connect(mapStateToProps, mapStateToDispatch)(Auth);
