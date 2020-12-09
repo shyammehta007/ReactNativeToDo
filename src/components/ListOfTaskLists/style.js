@@ -14,20 +14,6 @@ const styles = StyleSheet.create({
     color: COLORS.WHITE,
     fontSize: 18,
   },
-  listElementContainer: {
-    flexDirection: 'row',
-    height: 60,
-    backgroundColor: COLORS.DARKGREY,
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  listElementTitle: {
-    backgroundColor: COLORS.DARKGREY,
-    color: COLORS.NAVY,
-    width: '75%',
-    fontSize: 20,
-    padding: 3,
-  },
   detailsViewRedirection: {
     color: COLORS.WHITE,
     fontSize: 25,

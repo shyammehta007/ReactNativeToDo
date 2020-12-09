@@ -13,7 +13,7 @@ import appMainDrawer from '../appMainDrawer';
 
 const Stack = createStackNavigator();
 
-const Auth = (props) => {
+const AppStackNav = (props) => {
   const {userToken, isLoading, checkForToken} = props;
   useEffect(() => {
     checkForToken();
@@ -48,4 +48,4 @@ const mapStateToDispatch = {
   dispatchToggleLoading: toggleLoading,
 };
 
-export default connect(mapStateToProps, mapStateToDispatch)(Auth);
+export default connect(mapStateToProps, mapStateToDispatch)(AppStackNav);

@@ -1,18 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {Button, Text, View, TextInput, TouchableOpacity} from 'react-native';
-import {FlatList, Swipeable} from 'react-native-gesture-handler';
-import CheckBox from '@react-native-community/checkbox';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Button, Text, View, TouchableOpacity} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 import _ from 'lodash';
 
 import styles from './style';
-import {
-  createTask,
-  updateTask,
-  deleteTask,
-  trimTasklist,
-} from '../../actions/TaskOps';
+import TaskElementRenderer from './TaskFlatListRenderItem';
+import {createTask, deleteTask, trimTasklist} from '../../actions/TaskOps';
 import {MODAL_MESSAGES} from '../../constants/modalMessages';
 import AskForConformationModal from '../AskForConformationModal';
 import {COLORS} from '../../styles/colors';
@@ -23,7 +17,6 @@ const TaskList = (props) => {
     route,
     dispatchCreateTask,
     dispatchDeleteTask,
-    dispatchUpdateTask,
     dispatchTrimTask,
     listOfTasklistArray,
     listToTaskMap,
@@ -47,7 +40,8 @@ const TaskList = (props) => {
     navigation.setOptions({title: tasklistTitle});
     dispatchTrimTask({tasklist, tasklistId});
   }, []);
-  const rightAction = (prop) => {
+
+  const leftAction = (prop) => {
     const onDeleteClick = () => {
       setModalDetails(prop);
       toggleModal((prevState) => !prevState);
@@ -66,81 +60,6 @@ const TaskList = (props) => {
     );
   };
 
-  const renderTaskElement = (data) => {
-    const {title, taskId, completed} = data;
-
-    const statusHandler = (e) => {
-      const dispatchData = {
-        tasklistId,
-        taskId,
-        updates: {
-          completed: e,
-        },
-        tasklist,
-      };
-      dispatchUpdateTask(dispatchData);
-    };
-
-    const elementFocusHandler = () => {
-      if (title) {
-        return;
-      }
-      setTaskEmpty(true);
-    };
-    const titleEditHandler = (e) => {
-      const dispatchData = {
-        tasklist,
-        tasklistId,
-        taskId,
-        updates: {
-          title: e,
-        },
-      };
-      dispatchUpdateTask(dispatchData);
-      if (completed) {
-        statusHandler(false);
-        return;
-      }
-      if (e) {
-        setTaskEmpty(false);
-      } else {
-        setTaskEmpty(true);
-        setPopupState(true);
-      }
-    };
-
-    const rightSwipeHandler = () => rightAction({tasklistId, taskId});
-
-    return (
-      <Swipeable renderLeftActions={rightSwipeHandler}>
-        <View style={styles.taskElementContainer}>
-          <MaterialCommunityIcons
-            name="drag-vertical-variant"
-            color={COLORS.BLACK}
-            size={30}
-          />
-          <View style={styles.checkBoxContainer}>
-            <CheckBox
-              disabled={false}
-              value={completed}
-              boxType={'square'}
-              style={styles.checkBoxStyle}
-              onValueChange={statusHandler}
-            />
-          </View>
-          <TextInput
-            style={[styles.taskTitle, completed && styles.crossStyle]}
-            placeholder={'Task Name'}
-            onChangeText={titleEditHandler}
-            autoFocus
-            onFocus={elementFocusHandler}>
-            {title}
-          </TextInput>
-        </View>
-      </Swipeable>
-    );
-  };
-
   const createTaskHandler = () => {
     if (isTaskEmpty) {
       setPopupState(true);
@@ -148,6 +67,7 @@ const TaskList = (props) => {
       dispatchCreateTask({tasklistId});
     }
   };
+
   const onSubmitAction = () => {
     const {tasklistId: tlId, taskId} = modalOpenerDetails;
     const dispatchData = {
@@ -163,7 +83,17 @@ const TaskList = (props) => {
 
   const taskFlatlistSeparator = () => <View style={styles.seperatorStyle} />;
   const taskFlatlistKeyExtractor = (item) => item.taskId;
-  const taskFlatlistItemRenderer = ({item}) => renderTaskElement(item);
+  const taskFlatlistItemRenderer = ({item}) => (
+    <TaskElementRenderer
+      taskData={item}
+      tasklist={tasklist}
+      tasklistId={tasklistId}
+      setPopupState={setPopupState}
+      setTaskEmpty={setTaskEmpty}
+      leftAction={leftAction}
+    />
+  );
+
   return (
     <>
       <TouchableOpacity
@@ -207,7 +137,6 @@ const mapStateToProps = (state) => {
 const mapStateToDispatch = (dispatch) => {
   return {
     dispatchCreateTask: (details) => dispatch(createTask(details)),
-    dispatchUpdateTask: (details) => dispatch(updateTask(details)),
     dispatchDeleteTask: (details) => dispatch(deleteTask(details)),
     dispatchTrimTask: (details) => dispatch(trimTasklist(details)),
   };

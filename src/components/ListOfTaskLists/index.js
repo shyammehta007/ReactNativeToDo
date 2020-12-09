@@ -1,16 +1,6 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
-import {
-  Text,
-  View,
-  TextInput,
-  TouchableWithoutFeedback,
-  Button,
-  FlatList,
-} from 'react-native';
-import {Swipeable} from 'react-native-gesture-handler';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Text, View, Button, FlatList} from 'react-native';
 import _ from 'lodash';
 
 import styles from './style';
@@ -23,13 +13,13 @@ import {MODAL_MESSAGES} from '../../constants/modalMessages';
 import AskForConformationModal from '../AskForConformationModal';
 import {COLORS} from '../../styles/colors';
 import PopUpMessages from '../PopUpMessage';
+import RenderListElement from './FlatIistRenderItem';
 
 const ListOfTaskLists = (props) => {
   const {
     navigation,
-    dispatchCreateTasklist,
     listOfTasklistArray,
-    dispatchUpdateTasklist,
+    dispatchCreateTasklist,
     dispatchDeleteTasklist,
   } = props;
 
@@ -56,61 +46,6 @@ const ListOfTaskLists = (props) => {
     );
   };
 
-  const renderListElement = (data) => {
-    const {tasklistId, title} = data;
-
-    const onTitleEditHandler = (e) => {
-      if (e) {
-        dispatchUpdateTasklist({tasklistId, title: e});
-        setTasklistEmpty(false);
-      } else {
-        setTasklistEmpty(true);
-      }
-    };
-
-    const elementFocusHandler = (e) => {
-      const {
-        nativeEvent: {text},
-      } = e;
-      if (text) {
-        return;
-      }
-      setTasklistEmpty(true);
-    };
-
-    const forwardPressHandler = () => {
-      if (title) {
-        navigation.navigate('Tasklist', {id: tasklistId});
-      } else {
-        setPopupState(true);
-      }
-    };
-
-    const leftActionHandler = () => leftAction({tasklistId});
-
-    return (
-      <Swipeable renderLeftActions={leftActionHandler}>
-        <View style={styles.listElementContainer}>
-          <MaterialCommunityIcons
-            name="drag-vertical-variant"
-            color={COLORS.BLACK}
-            size={30}
-          />
-          <TextInput
-            style={styles.listElementTitle}
-            onChangeText={onTitleEditHandler}
-            onFocus={elementFocusHandler}
-            autoFocus>
-            {title}
-          </TextInput>
-          <TouchableWithoutFeedback onPress={forwardPressHandler}>
-            <Ionicons name="md-send" color={COLORS.BLACK} size={20} />
-          </TouchableWithoutFeedback>
-        </View>
-      </Swipeable>
-    );
-  };
-
   const onSubmitHandler = () => {
     const {tasklistId: tlId} = modalOpenerDetails;
 
@@ -134,7 +69,15 @@ const ListOfTaskLists = (props) => {
 
   const flatListSeperator = () => <View style={styles.seperatorStyle} />;
   const flatListKeyExtractor = (item) => item.tasklistId;
-  const flatListItemRenderer = ({item}) => renderListElement(item);
+  const flatListItemRenderer = ({item}) => (
+    <RenderListElement
+      listData={item}
+      leftAction={leftAction}
+      setTasklistEmpty={setTasklistEmpty}
+      setPopupState={setPopupState}
+      navigation={navigation}
+    />
+  );
 
   return (
     <>
@@ -181,7 +124,6 @@ const mapStateToProps = (state) => {
 const mapStateToDispatch = (dispatch) => {
   return {
     dispatchCreateTasklist: (details) => dispatch(createTasklist(details)),
-    dispatchUpdateTasklist: (details) => dispatch(updateTasklist(details)),
     dispatchDeleteTasklist: (details) => dispatch(deleteTasklist(details)),
   };
 };

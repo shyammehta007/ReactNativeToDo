@@ -1,12 +1,12 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 
-import Auth from './src/screens/Auth';
+import AppStackNav from './src/screens/AppStackNav';
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Auth />
+      <AppStackNav />
     </NavigationContainer>
   );
 }
