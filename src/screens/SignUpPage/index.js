@@ -14,15 +14,24 @@ const SignUpPage = (props) => {
   const onSubmit = (data) => {
     const {UserName, Password} = data;
     if (UserName && Password) {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'ToDo'}],
+      });
       dispatchSignUp(UserName);
       return;
     }
     setError(FORM_MESSAGES.ALL_FIELDS_REQUIRED);
   };
 
-  const signInRedirector = () => navigation.navigate('Sign In');
+  const signInRedirector = () =>
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'SignIn'}],
+    });
   return (
     <View style={styles.container}>
+      <Text style={styles.formHeader}>SIGN UP</Text>
       <Form formData={AUTHDATA} onSubmit={onSubmit} />
       <Text style={styles.errorMessage}>{errorMessage}</Text>
       <Button

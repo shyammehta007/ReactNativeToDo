@@ -49,6 +49,8 @@ const listToTaskReducer = (state = initialState, action) =>
 
       case Type.TRIM_TASKLIST:
         draftState.listToTaskMap[tasklistId] = updatedTasklist;
+        draftState.totalCompletedTask -= completedCountUpdate;
+        draftState.totalUncompletedTask -= uncompletedCountUpdate;
         break;
 
       case Type.TASKLIST_DELETE:

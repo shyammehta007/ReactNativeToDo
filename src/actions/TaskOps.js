@@ -39,12 +39,11 @@ export const updateTask = (dispatchedData) => {
 };
 
 export const trimTasklist = (dispatchData) => {
-  console.log(dispatchData);
   const {tasklist, tasklistId} = dispatchData;
-  const updatedTasklist = tasklistTrimmer({tasklist});
+  const parsedData = tasklistTrimmer({tasklist});
   const payload = {
     tasklistId,
-    updatedTasklist,
+    ...parsedData,
   };
   return {
     type: Types.TRIM_TASKLIST,

@@ -24,6 +24,7 @@ const TaskList = (props) => {
     dispatchCreateTask,
     dispatchDeleteTask,
     dispatchUpdateTask,
+    dispatchTrimTask,
     listOfTasklistArray,
     listToTaskMap,
     navigation,
@@ -44,8 +45,8 @@ const TaskList = (props) => {
 
   useEffect(() => {
     navigation.setOptions({title: tasklistTitle});
+    dispatchTrimTask({tasklist, tasklistId});
   }, []);
-
   const rightAction = (prop) => {
     const onDeleteClick = () => {
       setModalDetails(prop);
@@ -80,11 +81,8 @@ const TaskList = (props) => {
       dispatchUpdateTask(dispatchData);
     };
 
-    const elementFocusHandler = (e) => {
-      const {
-        nativeEvent: {text},
-      } = e;
-      if (text) {
+    const elementFocusHandler = () => {
+      if (title) {
         return;
       }
       setTaskEmpty(true);

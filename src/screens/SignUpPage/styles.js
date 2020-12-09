@@ -8,6 +8,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  formHeader: {
+    color: COLORS.LIGHTBLACK,
+    fontSize: 20,
+    marginBottom: 10,
+    textDecorationLine: 'underline',
+  },
   errorMessage: {
     color: COLORS.RED,
   },

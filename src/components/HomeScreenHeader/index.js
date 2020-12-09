@@ -18,7 +18,10 @@ const HomeScreenHeader = (props) => {
   const logOutHandler = () => {
     dispatchClearStore();
     dispatchLogOut();
-    navigation.navigate('Home');
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'SignIn'}],
+    });
   };
 
   return (

@@ -82,6 +82,20 @@ export const deletedTaskDetails = (data) => {
 
 export const tasklistTrimmer = (data) => {
   const {tasklist = []} = data;
-  const updatedTasklist = tasklist.filter((task) => !(task.title === ''));
-  return updatedTasklist;
+  let completedCountUpdate = 0;
+  let uncompletedCountUpdate = 0;
+  const updatedTasklist = tasklist.reduce((result, current) => {
+    if (current.title === '') {
+      current.completed ? completedCountUpdate++ : uncompletedCountUpdate++;
+      return result;
+    } else {
+      const updatedArray = [...result, current];
+      return updatedArray;
+    }
+  }, []);
+  return {
+    updatedTasklist,
+    completedCountUpdate,
+    uncompletedCountUpdate,
+  };
 };

@@ -33,6 +33,14 @@ const DrawerContent = (props) => {
   const detailIconComponent = () => (
     <Ionicons name="settings" color={COLORS.LIGHTGREEN} size={28} />
   );
+
+  const signOutHandler = () => {
+    dispatchLogOut();
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'SignIn'}],
+    });
+  };
   return (
     <View style={styles.drawerContainer}>
       <DrawerContentScrollView {...props}>
@@ -69,7 +77,7 @@ const DrawerContent = (props) => {
       </DrawerContentScrollView>
       <Drawer.Section>
         <TouchableOpacity
-          onPress={dispatchLogOut}
+          onPress={signOutHandler}
           style={styles.bottomLogOutButton}>
           <Ionicons name="exit" size={35} color={COLORS.WHITE} />
           <Text style={styles.signOutTextStyle}>Sign Out</Text>
